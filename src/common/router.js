@@ -5,12 +5,11 @@ import { getMenuData } from './menu';
 
 let routerDataCache;
 
-const modelNotExisted = (app, model) => (
+const modelNotExisted = (app, model) =>
   // eslint-disable-next-line
   !app._models.some(({ namespace }) => {
     return namespace === model.substring(model.lastIndexOf('/') + 1);
-  })
-);
+  });
 
 // wrapper of dynamic
 const dynamicWrapper = (app, models, component) => {
@@ -36,9 +35,8 @@ const dynamicWrapper = (app, models, component) => {
   // () => import('module')
   return dynamic({
     app,
-    models: () => models.filter(
-      model => modelNotExisted(app, model)).map(m => import(`../models/${m}.js`)
-    ),
+    models: () =>
+      models.filter(model => modelNotExisted(app, model)).map(m => import(`../models/${m}.js`)),
     // add routerData prop
     component: () => {
       if (!routerDataCache) {
@@ -46,10 +44,11 @@ const dynamicWrapper = (app, models, component) => {
       }
       return component().then((raw) => {
         const Component = raw.default || raw;
-        return props => createElement(Component, {
-          ...props,
-          routerData: routerDataCache,
-        });
+        return props =>
+          createElement(Component, {
+            ...props,
+            routerData: routerDataCache,
+          });
       });
     },
   });
@@ -80,7 +79,9 @@ export const getRouterData = (app) => {
       component: dynamicWrapper(app, ['monitor'], () => import('../routes/Dashboard/Monitor')),
     },
     '/dashboard/workplace': {
-      component: dynamicWrapper(app, ['project', 'activities', 'chart'], () => import('../routes/Dashboard/Workplace')),
+      component: dynamicWrapper(app, ['project', 'activities', 'chart'], () =>
+        import('../routes/Dashboard/Workplace')
+      ),
       // hideInBreadcrumb: true,
       // name: '工作台',
       // authority: 'admin',
@@ -128,7 +129,9 @@ export const getRouterData = (app) => {
       component: dynamicWrapper(app, ['profile'], () => import('../routes/Profile/BasicProfile')),
     },
     '/profile/advanced': {
-      component: dynamicWrapper(app, ['profile'], () => import('../routes/Profile/AdvancedProfile')),
+      component: dynamicWrapper(app, ['profile'], () =>
+        import('../routes/Profile/AdvancedProfile')
+      ),
     },
     '/result/success': {
       component: dynamicWrapper(app, [], () => import('../routes/Result/Success')),
@@ -146,7 +149,9 @@ export const getRouterData = (app) => {
       component: dynamicWrapper(app, [], () => import('../routes/Exception/500')),
     },
     '/exception/trigger': {
-      component: dynamicWrapper(app, ['error'], () => import('../routes/Exception/triggerException')),
+      component: dynamicWrapper(app, ['error'], () =>
+        import('../routes/Exception/triggerException')
+      ),
     },
     '/user': {
       component: dynamicWrapper(app, [], () => import('../layouts/UserLayout')),
@@ -159,6 +164,12 @@ export const getRouterData = (app) => {
     },
     '/user/register-result': {
       component: dynamicWrapper(app, [], () => import('../routes/User/RegisterResult')),
+    },
+    '/phototheque': {
+      component: dynamicWrapper(app, [], () => import('../routes/Phototheque')),
+    },
+    '/new': {
+      component: dynamicWrapper(app, [], () => import('../routes/Exception/500')),
     },
     // '/user/:id': {
     //   component: dynamicWrapper(app, [], () => import('../routes/User/SomeComponent')),

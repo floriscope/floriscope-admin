@@ -2,24 +2,29 @@ import { isUrl } from '../utils/utils';
 
 const menuData = [
   {
-    name: 'dashboard',
+    name: 'Dashboard',
     icon: 'dashboard',
     path: 'dashboard',
     children: [
       {
-        name: '分析页',
-        path: 'analysis',
-      },
-      {
-        name: '监控页',
+        name: 'Fréquentation',
         path: 'monitor',
       },
       {
-        name: '工作台',
+        name: 'Activités',
+        path: 'analysis',
+      },
+      {
+        name: 'Tracker',
         path: 'workplace',
         // hideInMenu: true,
       },
     ],
+  },
+  {
+    name: 'Photothèque',
+    icon: 'picture',
+    path: 'phototheque',
   },
   {
     name: 'Form',
@@ -158,6 +163,11 @@ const menuData = [
     icon: 'book',
     path: 'http://pro.ant.design/docs/getting-started',
     target: '_blank',
+  },
+  {
+    name: 'New',
+    icon: 'plus',
+    path: 'new',
   },
 ];
 

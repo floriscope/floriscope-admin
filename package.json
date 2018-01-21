@@ -1,7 +1,7 @@
 {
-  "name": "ant-design-pro",
-  "version": "1.0.1",
-  "description": "An out-of-box UI solution for enterprise applications",
+  "name": "floriscope-admin",
+  "version": "0.0.1",
+  "description": "Admin interfaces for Floriscope/Vegebase",
   "private": true,
   "scripts": {
     "precommit": "npm run lint-staged",
@@ -83,9 +83,5 @@
     "**/*.{js,jsx}": "lint-staged:js",
     "**/*.less": "stylelint --syntax less"
   },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not ie <= 10"
-  ]
+  "browserslist": ["> 1%", "last 2 versions", "not ie <= 10"]
 }
