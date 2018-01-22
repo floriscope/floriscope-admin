@@ -94,12 +94,12 @@ export default class SiderMenu extends PureComponent {
     return flatMenuKeys.filter((item) => {
       return pathToRegexp(`/${item}`).test(path);
     });
-  }
+  };
   /**
-  * 判断是否是http链接.返回 Link 或 a
-  * Judge whether it is http link.return a or Link
-  * @memberof SiderMenu
-  */
+   * 判断是否是http链接.返回 Link 或 a
+   * Judge whether it is http link.return a or Link
+   * @memberof SiderMenu
+   */
   getMenuItemPath = (item) => {
     const itemPath = this.conversionPath(item.path);
     const icon = getIcon(item.icon);
@@ -108,7 +108,8 @@ export default class SiderMenu extends PureComponent {
     if (/^https?:\/\//.test(itemPath)) {
       return (
         <a href={itemPath} target={target}>
-          {icon}<span>{name}</span>
+          {icon}
+          <span>{name}</span>
         </a>
       );
     }
@@ -117,16 +118,23 @@ export default class SiderMenu extends PureComponent {
         to={itemPath}
         target={target}
         replace={itemPath === this.props.location.pathname}
-        onClick={this.props.isMobile ? () => { this.props.onCollapse(true); } : undefined}
+        onClick={
+          this.props.isMobile
+            ? () => {
+                this.props.onCollapse(true);
+              }
+            : undefined
+        }
       >
-        {icon}<span>{name}</span>
+        {icon}
+        <span>{name}</span>
       </Link>
     );
-  }
+  };
   /**
    * get SubMenu or Item
    */
-  getSubMenuOrItem=(item) => {
+  getSubMenuOrItem = (item) => {
     if (item.children && item.children.some(child => child.name)) {
       return (
         <SubMenu
@@ -136,25 +144,23 @@ export default class SiderMenu extends PureComponent {
                 {getIcon(item.icon)}
                 <span>{item.name}</span>
               </span>
-            ) : item.name
-            }
+            ) : (
+              item.name
+            )
+          }
           key={item.path}
         >
           {this.getNavMenuItems(item.children)}
         </SubMenu>
       );
     } else {
-      return (
-        <Menu.Item key={item.path}>
-          {this.getMenuItemPath(item)}
-        </Menu.Item>
-      );
+      return <Menu.Item key={item.path}>{this.getMenuItemPath(item)}</Menu.Item>;
     }
-  }
+  };
   /**
-  * 获得菜单子节点
-  * @memberof SiderMenu
-  */
+   * 获得菜单子节点
+   * @memberof SiderMenu
+   */
   getNavMenuItems = (menusData) => {
     if (!menusData) {
       return [];
@@ -166,27 +172,24 @@ export default class SiderMenu extends PureComponent {
         return this.checkPermissionItem(item.authority, ItemDom);
       })
       .filter(item => !!item);
-  }
+  };
   // conversion Path
   // 转化路径
-  conversionPath=(path) => {
+  conversionPath = (path) => {
     if (path && path.indexOf('http') === 0) {
       return path;
     } else {
       return `/${path || ''}`.replace(/\/+/g, '/');
     }
-  }
+  };
   // permission to check
   checkPermissionItem = (authority, ItemDom) => {
     if (this.props.Authorized && this.props.Authorized.check) {
       const { check } = this.props.Authorized;
-      return check(
-        authority,
-        ItemDom
-      );
+      return check(authority, ItemDom);
     }
     return ItemDom;
-  }
+  };
   handleOpenChange = (openKeys) => {
     const lastOpenKey = openKeys[openKeys.length - 1];
     const isMainMenu = this.menus.some(
@@ -195,14 +198,16 @@ export default class SiderMenu extends PureComponent {
     this.setState({
       openKeys: isMainMenu ? [lastOpenKey] : [...openKeys],
     });
-  }
+  };
   render() {
     const { logo, collapsed, location: { pathname }, onCollapse } = this.props;
     const { openKeys } = this.state;
     // Don't show popup menu when it is been collapsed
-    const menuProps = collapsed ? {} : {
-      openKeys,
-    };
+    const menuProps = collapsed
+      ? {}
+      : {
+        openKeys,
+      };
     // if pathname can't match, use the nearest parent's key
     let selectedKeys = this.getSelectedMenuKeys(pathname);
     if (!selectedKeys.length) {
@@ -221,7 +226,7 @@ export default class SiderMenu extends PureComponent {
         <div className={styles.logo} key="logo">
           <Link to="/">
             <img src={logo} alt="logo" />
-            <h1>Ant Design Pro</h1>
+            <h1>Floriscope (Admin)</h1>
           </Link>
         </div>
         <Menu
