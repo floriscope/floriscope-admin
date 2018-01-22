@@ -10,9 +10,12 @@ const map = {
       prefix: <Icon type="user" className={styles.prefixIcon} />,
       placeholder: 'admin',
     },
-    rules: [{
-      required: true, message: '请输入账户名！',
-    }],
+    rules: [
+      {
+        required: true,
+        message: 'Veuillez saisir un email!',
+      },
+    ],
   },
   Password: {
     component: Input,
@@ -22,33 +25,44 @@ const map = {
       type: 'password',
       placeholder: '888888',
     },
-    rules: [{
-      required: true, message: '请输入密码！',
-    }],
+    rules: [
+      {
+        required: true,
+        message: 'Veuillez saisir un mot de passe！',
+      },
+    ],
   },
   Mobile: {
     component: Input,
     props: {
       size: 'large',
       prefix: <Icon type="mobile" className={styles.prefixIcon} />,
-      placeholder: '手机号',
+      placeholder: 'Numéro de téléphone',
     },
-    rules: [{
-      required: true, message: '请输入手机号！',
-    }, {
-      pattern: /^1\d{10}$/, message: '手机号格式错误！',
-    }],
+    rules: [
+      {
+        required: true,
+        message: 'Veuillez entrer un numéro de téléphone！',
+      },
+      {
+        pattern: /^1\d{10}$/,
+        message: 'Format de numéro de téléphone incorrect！',
+      },
+    ],
   },
   Captcha: {
     component: Input,
     props: {
       size: 'large',
       prefix: <Icon type="mail" className={styles.prefixIcon} />,
-      placeholder: '验证码',
+      placeholder: 'Code de vérification',
     },
-    rules: [{
-      required: true, message: '请输入验证码！',
-    }],
+    rules: [
+      {
+        required: true,
+        message: 'Veuillez saisir votre code de vérification！',
+      },
+    ],
   },
 };
 

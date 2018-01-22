@@ -203,24 +203,24 @@ class BasicLayout extends React.PureComponent {
           </Content>
           <GlobalFooter
             links={[{
-              key: 'Pro 首页',
-              title: 'Pro 首页',
-              href: 'http://pro.ant.design',
+              key: 'Blog',
+              title: 'Blog',
+              href: 'http://blog.floriscope.io',
               blankTarget: true,
             }, {
               key: 'github',
               title: <Icon type="github" />,
-              href: 'https://github.com/ant-design/ant-design-pro',
+              href: 'https://github.com/gaetan_pc/',
               blankTarget: true,
             }, {
-              key: 'Ant Design',
-              title: 'Ant Design',
-              href: 'http://ant.design',
+              key: 'Floriscope',
+              title: 'Floriscope',
+              href: 'https://www.floriscope.io',
               blankTarget: true,
             }]}
             copyright={
               <div>
-                Copyright <Icon type="copyright" /> 2018 蚂蚁金服体验技术部出品
+                Droits réservés <Icon type="copyright" /> 2018 Plante & Cité
               </div>
             }
           />
