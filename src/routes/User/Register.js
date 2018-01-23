@@ -37,12 +37,14 @@ export default class Register extends Component {
   componentWillReceiveProps(nextProps) {
     const account = this.props.form.getFieldValue('mail');
     if (nextProps.register.status === 'ok') {
-      this.props.dispatch(routerRedux.push({
-        pathname: '/user/register-result',
-        state: {
-          account,
-        },
-      }));
+      this.props.dispatch(
+        routerRedux.push({
+          pathname: '/user/register-result',
+          state: {
+            account,
+          },
+        })
+      );
     }
   }
 
@@ -197,13 +199,7 @@ export default class Register extends Component {
                     validator: this.checkPassword,
                   },
                 ],
-              })(
-                <Input
-                  size="large"
-                  type="password"
-                  placeholder="至少6位密码，区分大小写"
-                />
-              )}
+              })(<Input size="large" type="password" placeholder="至少6位密码，区分大小写" />)}
             </Popover>
           </FormItem>
           <FormItem>
@@ -241,13 +237,7 @@ export default class Register extends Component {
                     message: '手机号格式错误！',
                   },
                 ],
-              })(
-                <Input
-                  size="large"
-                  style={{ width: '80%' }}
-                  placeholder="11位手机号"
-                />
-              )}
+              })(<Input size="large" style={{ width: '80%' }} placeholder="11位手机号" />)}
             </InputGroup>
           </FormItem>
           <FormItem>
@@ -269,7 +259,7 @@ export default class Register extends Component {
                   className={styles.getCaptcha}
                   onClick={this.onGetCaptcha}
                 >
-                  {count ? `${count} s` : 'Obtenir un code'}
+                  {count ? `${count} s` : 'Obtenir'}
                 </Button>
               </Col>
             </Row>

@@ -73,7 +73,7 @@ function generator({ defaultProps, defaultRules, type }) {
                     size="large"
                     onClick={this.onGetCaptcha}
                   >
-                    {count ? `${count} s` : 'Obtenir un code'}
+                    {count ? `${count} s` : 'Obtenir'}
                   </Button>
                 </Col>
               </Row>

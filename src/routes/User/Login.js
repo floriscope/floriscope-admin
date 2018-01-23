@@ -57,8 +57,8 @@ export default class LoginPage extends Component {
               login.type === 'account' &&
               !login.submitting &&
               this.renderMessage('Email ou mot de passe incorrect（admin/888888）')}
-            <UserName name="userName" placeholder="admin/user" />
-            <Password name="password" placeholder="888888/123456" />
+            <UserName name="userName" placeholder="admin/editor/user" />
+            <Password name="password" placeholder="888888/666666/123456" />
           </Tab>
           <Tab key="mobile" tab="SMS">
             {login.status === 'error' &&

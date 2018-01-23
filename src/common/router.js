@@ -86,6 +86,21 @@ export const getRouterData = (app) => {
       // name: '工作台',
       // authority: 'admin',
     },
+    '/phototheque': {
+      component: dynamicWrapper(app, [], () => import('../routes/Phototheque')),
+    },
+    '/listes': {
+      component: dynamicWrapper(app, [], () => import('../routes/Liste/ListeAll')),
+    },
+    '/data': {
+      component: dynamicWrapper(app, [], () => import('../routes/Exception/404')),
+    },
+    '/schema/criteres': {
+      component: dynamicWrapper(app, [], () => import('../routes/Schema/Critera')),
+    },
+    '/schema/valeurs-possibles': {
+      component: dynamicWrapper(app, [], () => import('../routes/Schema/OptionValues')),
+    },
     '/form/basic-form': {
       component: dynamicWrapper(app, ['form'], () => import('../routes/Forms/BasicForm')),
     },
@@ -164,9 +179,6 @@ export const getRouterData = (app) => {
     },
     '/user/register-result': {
       component: dynamicWrapper(app, [], () => import('../routes/User/RegisterResult')),
-    },
-    '/phototheque': {
-      component: dynamicWrapper(app, [], () => import('../routes/Phototheque')),
     },
     '/new': {
       component: dynamicWrapper(app, [], () => import('../routes/Exception/500')),

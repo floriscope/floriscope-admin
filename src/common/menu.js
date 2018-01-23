@@ -2,7 +2,7 @@ import { isUrl } from '../utils/utils';
 
 const menuData = [
   {
-    name: 'Dashboard',
+    name: 'Tableau de bord',
     icon: 'dashboard',
     path: 'dashboard',
     children: [
@@ -25,6 +25,43 @@ const menuData = [
     name: 'Photothèque',
     icon: 'picture',
     path: 'phototheque',
+  },
+  {
+    name: 'Listes de plantes',
+    icon: 'table',
+    path: 'listes',
+  },
+  {
+    name: 'Gestion des données',
+    icon: 'database',
+    path: 'data',
+    authority: 'admin',
+  },
+  {
+    name: 'Gestion du schéma',
+    icon: 'api',
+    path: 'schema',
+    authority: 'admin',
+    children: [
+      {
+        name: 'Critères',
+        path: 'criteres',
+      },
+      {
+        name: 'Valeurs possibles',
+        path: 'valeurs-possibles',
+      },
+      {
+        name: 'Sources',
+        path: 'sources',
+      },
+    ],
+  },
+  {
+    name: 'Documentation',
+    icon: 'book',
+    path: 'http://aide.floriscope.io',
+    target: '_blank',
   },
   {
     name: 'Form',
