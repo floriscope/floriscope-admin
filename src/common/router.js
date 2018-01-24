@@ -90,7 +90,7 @@ export const getRouterData = (app) => {
       component: dynamicWrapper(app, [], () => import('../routes/Phototheque')),
     },
     '/listes': {
-      component: dynamicWrapper(app, [], () => import('../routes/Liste/ListeAll')),
+      component: dynamicWrapper(app, ['collection'], () => import('../routes/Liste/ListeAll')),
     },
     '/data': {
       component: dynamicWrapper(app, [], () => import('../routes/Exception/404')),
