@@ -7,9 +7,9 @@ import styles from './Login.less';
 
 const { Tab, UserName, Password, Mobile, Captcha, Submit } = Login;
 
-@connect(({ login, loading }) => ({
-  login,
-  submitting: loading.effects['login/login'],
+@connect(({ signin, loading }) => ({
+  signin,
+  submitting: loading.effects['signin/signin'],
 }))
 export default class LoginPage extends Component {
   state = {
@@ -27,7 +27,7 @@ export default class LoginPage extends Component {
     const { type } = this.state;
     if (!err) {
       this.props.dispatch({
-        type: 'login/login',
+        type: 'signin/signin',
         payload: {
           ...values,
           type,
@@ -47,23 +47,23 @@ export default class LoginPage extends Component {
   };
 
   render() {
-    const { login, submitting } = this.props;
+    const { signin, submitting } = this.props;
     const { type } = this.state;
     return (
       <div className={styles.main}>
         <Login defaultActiveKey={type} onTabChange={this.onTabChange} onSubmit={this.handleSubmit}>
           <Tab key="account" tab="Email">
-            {login.status === 'error' &&
-              login.type === 'account' &&
-              !login.submitting &&
-              this.renderMessage('Email ou mot de passe incorrect（admin/888888）')}
-            <UserName name="userName" placeholder="admin/editor/user" />
-            <Password name="password" placeholder="888888/666666/123456" />
+            {signin.httpCode === 401 &&
+              signin.type === 'account' &&
+              !signin.submitting &&
+              this.renderMessage('Email ou mot de passe incorrect')}
+            <UserName name="email" placeholder="Adresse électronique" />
+            <Password name="password" placeholder="Mot de passe" />
           </Tab>
           <Tab key="mobile" tab="SMS">
-            {login.status === 'error' &&
-              login.type === 'mobile' &&
-              !login.submitting &&
+            {signin.httpCode === 401 &&
+              signin.type === 'mobile' &&
+              !signin.submitting &&
               this.renderMessage('Code de vérification incorrect')}
             <Mobile name="mobile" />
             <Captcha name="captcha" />

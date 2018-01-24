@@ -6,3 +6,11 @@ export function getAuthority() {
 export function setAuthority(authority) {
   return localStorage.setItem('antd-pro-authority', authority);
 }
+// use localStorage to store currentUser info
+export function getCurrentUser() {
+  return localStorage.getItem('floriscope-current-user') || {};
+}
+
+export function setCurrentUser(user) {
+  return localStorage.setItem('floriscope-current-user', JSON.stringify(user));
+}
