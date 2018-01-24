@@ -2,24 +2,66 @@ import { isUrl } from '../utils/utils';
 
 const menuData = [
   {
-    name: 'dashboard',
+    name: 'Tableau de bord',
     icon: 'dashboard',
     path: 'dashboard',
     children: [
       {
-        name: '分析页',
-        path: 'analysis',
-      },
-      {
-        name: '监控页',
+        name: 'Fréquentation',
         path: 'monitor',
       },
       {
-        name: '工作台',
+        name: 'Activités',
+        path: 'analysis',
+      },
+      {
+        name: 'Tracker',
         path: 'workplace',
         // hideInMenu: true,
       },
     ],
+  },
+  {
+    name: 'Photothèque',
+    icon: 'picture',
+    path: 'phototheque',
+  },
+  {
+    name: 'Listes de plantes',
+    icon: 'table',
+    path: 'listes',
+  },
+  {
+    name: 'Gestion des données',
+    icon: 'database',
+    path: 'data',
+    authority: 'admin',
+  },
+  {
+    name: 'Gestion du schéma',
+    icon: 'api',
+    path: 'schema',
+    authority: 'admin',
+    children: [
+      {
+        name: 'Critères',
+        path: 'criteres',
+      },
+      {
+        name: 'Valeurs possibles',
+        path: 'valeurs-possibles',
+      },
+      {
+        name: 'Sources',
+        path: 'sources',
+      },
+    ],
+  },
+  {
+    name: 'Documentation',
+    icon: 'book',
+    path: 'http://aide.floriscope.io',
+    target: '_blank',
   },
   {
     name: 'Form',
@@ -158,6 +200,11 @@ const menuData = [
     icon: 'book',
     path: 'http://pro.ant.design/docs/getting-started',
     target: '_blank',
+  },
+  {
+    name: 'New',
+    icon: 'plus',
+    path: 'new',
   },
 ];
 

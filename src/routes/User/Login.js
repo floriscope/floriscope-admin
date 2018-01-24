@@ -15,13 +15,15 @@ export default class LoginPage extends Component {
   state = {
     type: 'account',
     autoLogin: true,
-  }
+  };
 
   onTabChange = (type) => {
     this.setState({ type });
-  }
+  };
 
   handleSubmit = (err, values) => {
+    console.log('Submit form');
+    console.log(values);
     const { type } = this.state;
     if (!err) {
       this.props.dispatch({
@@ -32,61 +34,57 @@ export default class LoginPage extends Component {
         },
       });
     }
-  }
+  };
 
   changeAutoLogin = (e) => {
     this.setState({
       autoLogin: e.target.checked,
     });
-  }
+  };
 
   renderMessage = (content) => {
-    return (
-      <Alert style={{ marginBottom: 24 }} message={content} type="error" showIcon />
-    );
-  }
+    return <Alert style={{ marginBottom: 24 }} message={content} type="error" showIcon />;
+  };
 
   render() {
     const { login, submitting } = this.props;
     const { type } = this.state;
     return (
       <div className={styles.main}>
-        <Login
-          defaultActiveKey={type}
-          onTabChange={this.onTabChange}
-          onSubmit={this.handleSubmit}
-        >
-          <Tab key="account" tab="账户密码登录">
-            {
-              login.status === 'error' &&
+        <Login defaultActiveKey={type} onTabChange={this.onTabChange} onSubmit={this.handleSubmit}>
+          <Tab key="account" tab="Email">
+            {login.status === 'error' &&
               login.type === 'account' &&
               !login.submitting &&
-              this.renderMessage('账户或密码错误（admin/888888）')
-            }
-            <UserName name="userName" placeholder="admin/user" />
-            <Password name="password" placeholder="888888/123456" />
+              this.renderMessage('Email ou mot de passe incorrect（admin/888888）')}
+            <UserName name="userName" placeholder="admin/editor/user" />
+            <Password name="password" placeholder="888888/666666/123456" />
           </Tab>
-          <Tab key="mobile" tab="手机号登录">
-            {
-              login.status === 'error' &&
+          <Tab key="mobile" tab="SMS">
+            {login.status === 'error' &&
               login.type === 'mobile' &&
               !login.submitting &&
-              this.renderMessage('验证码错误')
-            }
+              this.renderMessage('Code de vérification incorrect')}
             <Mobile name="mobile" />
             <Captcha name="captcha" />
           </Tab>
           <div>
-            <Checkbox checked={this.state.autoLogin} onChange={this.changeAutoLogin}>自动登录</Checkbox>
-            <a style={{ float: 'right' }} href="">忘记密码</a>
+            <Checkbox checked={this.state.autoLogin} onChange={this.changeAutoLogin}>
+              Rester connecté?
+            </Checkbox>
+            <a style={{ float: 'right' }} href="">
+              Mot de passe oublié
+            </a>
           </div>
-          <Submit loading={submitting}>登录</Submit>
+          <Submit loading={submitting}>Connexion</Submit>
           <div className={styles.other}>
-            其他登录方式
-            <Icon className={styles.icon} type="alipay-circle" />
-            <Icon className={styles.icon} type="taobao-circle" />
-            <Icon className={styles.icon} type="weibo-circle" />
-            <Link className={styles.register} to="/user/register">注册账户</Link>
+            Me connecter avec
+            <Icon className={styles.icon} type="facebook" />
+            <Icon className={styles.icon} type="linkedin" />
+            <Icon className={styles.icon} type="github" />
+            <Link className={styles.register} to="/user/register">
+              Créer un compte
+            </Link>
           </div>
         </Login>
       </div>

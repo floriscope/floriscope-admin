@@ -68,7 +68,7 @@ class BasicLayout extends React.PureComponent {
   static childContextTypes = {
     location: PropTypes.object,
     breadcrumbNameMap: PropTypes.object,
-  }
+  };
   state = {
     isMobile,
   };
@@ -94,7 +94,7 @@ class BasicLayout extends React.PureComponent {
     const { pathname } = location;
     let title = 'Ant Design Pro';
     if (routerData[pathname] && routerData[pathname].name) {
-      title = `${routerData[pathname].name} - Ant Design Pro`;
+      title = `${routerData[pathname].name} - Floriscope`;
     }
     return title;
   }
@@ -109,23 +109,23 @@ class BasicLayout extends React.PureComponent {
       urlParams.searchParams.delete('redirect');
       window.history.replaceState(null, 'redirect', urlParams.href);
     } else {
-      return '/dashboard/analysis';
+      return '/phototheque';
     }
     return redirect;
-  }
+  };
   handleMenuCollapse = (collapsed) => {
     this.props.dispatch({
       type: 'global/changeLayoutCollapsed',
       payload: collapsed,
     });
-  }
+  };
   handleNoticeClear = (type) => {
     message.success(`清空了${type}`);
     this.props.dispatch({
       type: 'global/clearNotices',
       payload: type,
     });
-  }
+  };
   handleMenuClick = ({ key }) => {
     if (key === 'triggerError') {
       this.props.dispatch(routerRedux.push('/exception/trigger'));
@@ -136,17 +136,23 @@ class BasicLayout extends React.PureComponent {
         type: 'login/logout',
       });
     }
-  }
+  };
   handleNoticeVisibleChange = (visible) => {
     if (visible) {
       this.props.dispatch({
         type: 'global/fetchNotices',
       });
     }
-  }
+  };
   render() {
     const {
-      currentUser, collapsed, fetchingNotices, notices, routerData, match, location,
+      currentUser,
+      collapsed,
+      fetchingNotices,
+      notices,
+      routerData,
+      match,
+      location,
     } = this.props;
     const bashRedirect = this.getBashRedirect();
     const layout = (
@@ -178,49 +184,47 @@ class BasicLayout extends React.PureComponent {
           />
           <Content style={{ margin: '24px 24px 0', height: '100%' }}>
             <Switch>
-              {
-                redirectData.map(item =>
-                  <Redirect key={item.from} exact from={item.from} to={item.to} />
-                )
-              }
-              {
-                getRoutes(match.path, routerData).map(item =>
-                  (
-                    <AuthorizedRoute
-                      key={item.key}
-                      path={item.path}
-                      component={item.component}
-                      exact={item.exact}
-                      authority={item.authority}
-                      redirectPath="/exception/403"
-                    />
-                  )
-                )
-              }
+              {redirectData.map(item => (
+                <Redirect key={item.from} exact from={item.from} to={item.to} />
+              ))}
+              {getRoutes(match.path, routerData).map(item => (
+                <AuthorizedRoute
+                  key={item.key}
+                  path={item.path}
+                  component={item.component}
+                  exact={item.exact}
+                  authority={item.authority}
+                  redirectPath="/exception/403"
+                />
+              ))}
               <Redirect exact from="/" to={bashRedirect} />
               <Route render={NotFound} />
             </Switch>
           </Content>
           <GlobalFooter
-            links={[{
-              key: 'Pro 首页',
-              title: 'Pro 首页',
-              href: 'http://pro.ant.design',
-              blankTarget: true,
-            }, {
-              key: 'github',
-              title: <Icon type="github" />,
-              href: 'https://github.com/ant-design/ant-design-pro',
-              blankTarget: true,
-            }, {
-              key: 'Ant Design',
-              title: 'Ant Design',
-              href: 'http://ant.design',
-              blankTarget: true,
-            }]}
+            links={[
+              {
+                key: 'Blog',
+                title: 'Blog',
+                href: 'http://blog.floriscope.io',
+                blankTarget: true,
+              },
+              {
+                key: 'github',
+                title: <Icon type="github" />,
+                href: 'https://github.com/gaetan_pc/',
+                blankTarget: true,
+              },
+              {
+                key: 'Floriscope',
+                title: 'Floriscope',
+                href: 'https://www.floriscope.io',
+                blankTarget: true,
+              },
+            ]}
             copyright={
               <div>
-                Copyright <Icon type="copyright" /> 2018 蚂蚁金服体验技术部出品
+                Droits réservés <Icon type="copyright" /> 2018 Plante & Cité
               </div>
             }
           />

@@ -41,7 +41,7 @@ function generator({ defaultProps, defaultRules, type }) {
             clearInterval(this.interval);
           }
         }, 1000);
-      }
+      };
       render() {
         const { getFieldDecorator } = this.context.form;
         const options = {};
@@ -73,7 +73,7 @@ function generator({ defaultProps, defaultRules, type }) {
                     size="large"
                     onClick={this.onGetCaptcha}
                   >
-                    {count ? `${count} s` : '获取验证码'}
+                    {count ? `${count} s` : 'Obtenir'}
                   </Button>
                 </Col>
               </Row>

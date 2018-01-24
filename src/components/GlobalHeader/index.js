@@ -29,13 +29,17 @@ export default class GlobalHeader extends PureComponent {
         newNotice.key = newNotice.id;
       }
       if (newNotice.extra && newNotice.status) {
-        const color = ({
+        const color = {
           todo: '',
           processing: 'blue',
           urgent: 'red',
           doing: 'gold',
-        })[newNotice.status];
-        newNotice.extra = <Tag color={color} style={{ marginRight: 0 }}>{newNotice.extra}</Tag>;
+        }[newNotice.status];
+        newNotice.extra = (
+          <Tag color={color} style={{ marginRight: 0 }}>
+            {newNotice.extra}
+          </Tag>
+        );
       }
       return newNotice;
     });
@@ -45,40 +49,51 @@ export default class GlobalHeader extends PureComponent {
     const { collapsed, onCollapse } = this.props;
     onCollapse(!collapsed);
     this.triggerResizeEvent();
-  }
+  };
   @Debounce(600)
-  triggerResizeEvent() { // eslint-disable-line
+  triggerResizeEvent() {
+    // eslint-disable-line
     const event = document.createEvent('HTMLEvents');
     event.initEvent('resize', true, false);
     window.dispatchEvent(event);
   }
   render() {
     const {
-      currentUser, collapsed, fetchingNotices, isMobile, logo,
-      onNoticeVisibleChange, onMenuClick, onNoticeClear,
+      currentUser,
+      collapsed,
+      fetchingNotices,
+      isMobile,
+      logo,
+      onNoticeVisibleChange,
+      onMenuClick,
+      onNoticeClear,
     } = this.props;
     const menu = (
       <Menu className={styles.menu} selectedKeys={[]} onClick={onMenuClick}>
-        <Menu.Item disabled><Icon type="user" />个人中心</Menu.Item>
-        <Menu.Item disabled><Icon type="setting" />设置</Menu.Item>
-        <Menu.Item key="triggerError"><Icon type="close-circle" />触发报错</Menu.Item>
+        <Menu.Item disabled>
+          <Icon type="user" />Profil
+        </Menu.Item>
+        <Menu.Item disabled>
+          <Icon type="setting" />Paramètres
+        </Menu.Item>
+        <Menu.Item key="triggerError">
+          <Icon type="close-circle" />Pages d'erreur
+        </Menu.Item>
         <Menu.Divider />
-        <Menu.Item key="logout"><Icon type="logout" />退出登录</Menu.Item>
+        <Menu.Item key="logout">
+          <Icon type="logout" />Déconnexion
+        </Menu.Item>
       </Menu>
     );
     const noticeData = this.getNoticeData();
     return (
       <Header className={styles.header}>
-        {isMobile && (
-          [
-            (
-              <Link to="/" className={styles.logo} key="logo">
-                <img src={logo} alt="logo" width="32" />
-              </Link>
-            ),
-            <Divider type="vertical" key="line" />,
-          ]
-        )}
+        {isMobile && [
+          <Link to="/" className={styles.logo} key="logo">
+            <img src={logo} alt="logo" width="32" />
+          </Link>,
+          <Divider type="vertical" key="line" />,
+        ]}
         <Icon
           className={styles.trigger}
           type={collapsed ? 'menu-unfold' : 'menu-fold'}
@@ -87,8 +102,8 @@ export default class GlobalHeader extends PureComponent {
         <div className={styles.right}>
           <HeaderSearch
             className={`${styles.action} ${styles.search}`}
-            placeholder="站内搜索"
-            dataSource={['搜索提示一', '搜索提示二', '搜索提示三']}
+            placeholder="Retrouver des ressources"
+            dataSource={['Plantes', 'Images', 'Listes']}
             onSearch={(value) => {
               console.log('input', value); // eslint-disable-line
             }}
@@ -133,7 +148,9 @@ export default class GlobalHeader extends PureComponent {
                 <span className={styles.name}>{currentUser.name}</span>
               </span>
             </Dropdown>
-          ) : <Spin size="small" style={{ marginLeft: 8 }} />}
+          ) : (
+            <Spin size="small" style={{ marginLeft: 8 }} />
+          )}
         </div>
       </Header>
     );
