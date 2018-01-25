@@ -1,6 +1,6 @@
 {
   "name": "floriscope-admin",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Admin interfaces for Floriscope/Vegebase",
   "private": true,
   "scripts": {
@@ -18,7 +18,8 @@
     "test": "roadhog test",
     "test:component": "roadhog test ./src/components",
     "test:all": "node ./tests/run-tests.js",
-    "deploy": "yarn build && touch dist/package.json && cat .tmp/dist/package.json > dist/package.json && cd dist && now --name floriscope-admin --public -e SECRET=cjbqc44p117wp0142i1uenoi6"
+    "deploy":
+      "yarn build && touch dist/package.json && cat .tmp/dist/package.json > dist/package.json && cd dist && now --name floriscope-admin --public -e SECRET=cjbqc44p117wp0142i1uenoi6"
   },
   "dependencies": {
     "@antv/data-set": "^0.8.0",
@@ -85,9 +86,5 @@
     "**/*.{js,jsx}": "lint-staged:js",
     "**/*.less": "stylelint --syntax less"
   },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not ie <= 10"
-  ]
+  "browserslist": ["> 1%", "last 2 versions", "not ie <= 10"]
 }
