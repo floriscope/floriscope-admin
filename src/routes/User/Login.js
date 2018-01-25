@@ -4,6 +4,7 @@ import { Link } from 'dva/router';
 import { Checkbox, Alert, Icon } from 'antd';
 import Login from '../../components/Login';
 import styles from './Login.less';
+import { getAuthority, clearCurrentUser } from '../../utils/authority';
 
 const { Tab, UserName, Password, Mobile, Captcha, Submit } = Login;
 
@@ -17,13 +18,18 @@ export default class LoginPage extends Component {
     autoLogin: true,
   };
 
+  componentDidMount() {
+    const authority = getAuthority();
+    if (authority === 'guest') {
+      clearCurrentUser();
+    }
+  }
+
   onTabChange = (type) => {
     this.setState({ type });
   };
 
   handleSubmit = (err, values) => {
-    console.log('Submit form');
-    console.log(values);
     const { type } = this.state;
     if (!err) {
       this.props.dispatch({

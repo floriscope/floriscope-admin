@@ -133,7 +133,7 @@ class BasicLayout extends React.PureComponent {
     }
     if (key === 'logout') {
       this.props.dispatch({
-        type: 'signin/logout',
+        type: 'login/logout',
       });
     }
   };

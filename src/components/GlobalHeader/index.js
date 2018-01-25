@@ -11,12 +11,6 @@ import styles from './index.less';
 const { Header } = Layout;
 
 export default class GlobalHeader extends PureComponent {
-  @Debounce(600)
-  static triggerResizeEvent() {
-    const event = document.createEvent('HTMLEvents');
-    event.initEvent('resize', true, false);
-    window.dispatchEvent(event);
-  }
   componentWillUnmount() {
     this.triggerResizeEvent.cancel();
   }
@@ -51,6 +45,13 @@ export default class GlobalHeader extends PureComponent {
     });
     return groupBy(newNotices, 'type');
   }
+
+  @Debounce(600)
+  triggerResizeEvent = () => {
+    const event = document.createEvent('HTMLEvents');
+    event.initEvent('resize', true, false);
+    window.dispatchEvent(event);
+  };
   toggle = () => {
     const { collapsed, onCollapse } = this.props;
     onCollapse(!collapsed);
@@ -140,7 +141,7 @@ export default class GlobalHeader extends PureComponent {
               emptyImage="https://gw.alipayobjects.com/zos/rmsportal/HsIsxMZiWKrNUavQUXqx.svg"
             />
           </NoticeIcon>
-          {currentUser.email ? (
+          {currentUser.username ? (
             <Dropdown overlay={menu}>
               <span className={`${styles.action} ${styles.account}`}>
                 <Avatar
@@ -148,7 +149,7 @@ export default class GlobalHeader extends PureComponent {
                   className={styles.avatar}
                   src={currentUser.profile.avatar_url}
                 />
-                <span className={styles.name}>{currentUser.email}</span>
+                <span className={styles.name}>@{currentUser.username}</span>
               </span>
             </Dropdown>
           ) : (
