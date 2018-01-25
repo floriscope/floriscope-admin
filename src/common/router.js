@@ -86,11 +86,14 @@ export const getRouterData = (app) => {
       // name: '工作台',
       // authority: 'admin',
     },
-    '/phototheque': {
-      component: dynamicWrapper(app, [], () => import('../routes/Phototheque')),
-    },
     '/listes': {
       component: dynamicWrapper(app, ['collection'], () => import('../routes/Liste/ListeAll')),
+    },
+    '/c/:uuid': {
+      component: dynamicWrapper(app, [], () => import('../routes/Liste/Liste')),
+    },
+    '/phototheque': {
+      component: dynamicWrapper(app, ['list'], () => import('../routes/Phototheque/Phototheque')),
     },
     '/data': {
       component: dynamicWrapper(app, [], () => import('../routes/Exception/404')),
