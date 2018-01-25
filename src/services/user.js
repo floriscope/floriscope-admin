@@ -1,9 +1,11 @@
 import request from '../utils/request';
+import { getCurrentUser } from '../utils/authority';
 
 export async function query() {
   return request('/api/users');
 }
 
 export async function queryCurrent() {
-  return request('/api/currentUser');
+  const current = await getCurrentUser();
+  return JSON.parse(current);
 }

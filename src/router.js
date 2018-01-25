@@ -24,13 +24,13 @@ function RouterConfig({ history, app }) {
           <AuthorizedRoute
             path="/user"
             render={props => <UserLayout {...props} />}
-            authority="guest"
+            authority={['guest', 'reader']}
             redirectPath="/"
           />
           <AuthorizedRoute
             path="/"
             render={props => <BasicLayout {...props} />}
-            authority={['admin', 'user']}
+            authority={['admin', 'editor']}
             redirectPath="/user/login"
           />
         </Switch>

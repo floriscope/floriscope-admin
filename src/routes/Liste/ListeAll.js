@@ -1,8 +1,10 @@
 import { Avatar, Button, Card, Dropdown, Icon, Input, List, Menu, Progress, Radio } from 'antd';
 import React, { PureComponent } from 'react';
+import { Route, Switch } from 'dva/router';
 import { connect } from 'dva';
 import moment from 'moment';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import Liste from './Liste.js';
 import styles from './ListeAll.less';
 
 const RadioButton = Radio.Button;
@@ -17,18 +19,17 @@ export default class ListeAll extends PureComponent {
   componentDidMount() {
     this.props.dispatch({
       type: 'collection/fetch',
-      token:
-        'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiZ2FldGFuQHZlZ2ViYXNlLmlvIiwiZXhwIjoxNTE2ODA2MzYyfQ.Z9wnXQ074cL1gOJETI3oBYuVUR1TBD8u0bzF-jabvZo',
       payload: {
         count: 5,
         token:
-          'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiZ2FldGFuQHZlZ2ViYXNlLmlvIiwiZXhwIjoxNTE2ODA2MzYyfQ.Z9wnXQ074cL1gOJETI3oBYuVUR1TBD8u0bzF-jabvZo',
+          'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiZ2FldGFuQHZlZ2ViYXNlLmlvIiwiZXhwIjoxNTE2OTEzOTg4fQ.rr7wKPJyn_WO0YR-j4CVQrJfcsUi9cEZRK6T9O9KeW0',
       },
     });
   }
 
   render() {
     const { collection: { collections }, loading } = this.props;
+    console.log(collections);
 
     const extraContent = (
       <div className={styles.extraContent}>
@@ -93,6 +94,9 @@ export default class ListeAll extends PureComponent {
 
     return (
       <PageHeaderLayout>
+        <Switch>
+          <Route path="/collection/:slug" component={Liste} />
+        </Switch>
         <div className={styles.standardList}>
           <Card
             className={styles.listCard}

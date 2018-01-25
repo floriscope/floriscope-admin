@@ -92,7 +92,7 @@ class BasicLayout extends React.PureComponent {
   getPageTitle() {
     const { routerData, location } = this.props;
     const { pathname } = location;
-    let title = 'Ant Design Pro';
+    let title = 'Floriscope - Admin';
     if (routerData[pathname] && routerData[pathname].name) {
       title = `${routerData[pathname].name} - Floriscope`;
     }
@@ -109,7 +109,7 @@ class BasicLayout extends React.PureComponent {
       urlParams.searchParams.delete('redirect');
       window.history.replaceState(null, 'redirect', urlParams.href);
     } else {
-      return '/phototheque';
+      return '/collections';
     }
     return redirect;
   };

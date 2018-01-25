@@ -1,5 +1,5 @@
 import { fakeAccountLogin } from '../services/api';
-import { setAuthority } from '../utils/authority';
+import { setAuthority, clearCurrentUser } from '../utils/authority';
 
 export default {
   namespace: 'login',
@@ -51,6 +51,9 @@ export default {
   reducers: {
     changeLoginStatus(state, { payload }) {
       setAuthority(payload.currentAuthority);
+      if (payload.currentAuthority === 'guest') {
+        clearCurrentUser();
+      }
       return {
         ...state,
         status: payload.status,

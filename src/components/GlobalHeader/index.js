@@ -45,18 +45,18 @@ export default class GlobalHeader extends PureComponent {
     });
     return groupBy(newNotices, 'type');
   }
+
+  @Debounce(600)
+  triggerResizeEvent = () => {
+    const event = document.createEvent('HTMLEvents');
+    event.initEvent('resize', true, false);
+    window.dispatchEvent(event);
+  };
   toggle = () => {
     const { collapsed, onCollapse } = this.props;
     onCollapse(!collapsed);
     this.triggerResizeEvent();
   };
-  @Debounce(600)
-  triggerResizeEvent() {
-    // eslint-disable-line
-    const event = document.createEvent('HTMLEvents');
-    event.initEvent('resize', true, false);
-    window.dispatchEvent(event);
-  }
   render() {
     const {
       currentUser,
@@ -77,7 +77,7 @@ export default class GlobalHeader extends PureComponent {
           <Icon type="setting" />Paramètres
         </Menu.Item>
         <Menu.Item key="triggerError">
-          <Icon type="close-circle" />Pages d'erreur
+          <Icon type="close-circle" />Error Pages
         </Menu.Item>
         <Menu.Divider />
         <Menu.Item key="logout">
@@ -141,11 +141,15 @@ export default class GlobalHeader extends PureComponent {
               emptyImage="https://gw.alipayobjects.com/zos/rmsportal/HsIsxMZiWKrNUavQUXqx.svg"
             />
           </NoticeIcon>
-          {currentUser.name ? (
+          {currentUser.username ? (
             <Dropdown overlay={menu}>
               <span className={`${styles.action} ${styles.account}`}>
-                <Avatar size="small" className={styles.avatar} src={currentUser.avatar} />
-                <span className={styles.name}>{currentUser.name}</span>
+                <Avatar
+                  size="small"
+                  className={styles.avatar}
+                  src={currentUser.profile.avatar_url}
+                />
+                <span className={styles.name}>@{currentUser.username}</span>
               </span>
             </Dropdown>
           ) : (

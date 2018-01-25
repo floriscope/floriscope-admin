@@ -22,14 +22,14 @@ const menuData = [
     ],
   },
   {
-    name: 'Photothèque',
-    icon: 'picture',
-    path: 'phototheque',
+    name: 'Gestion des listes',
+    icon: 'table',
+    path: 'collections',
   },
   {
-    name: 'Listes de plantes',
-    icon: 'table',
-    path: 'listes',
+    name: 'Gestion de la photothèque',
+    icon: 'picture',
+    path: 'phototheque',
   },
   {
     name: 'Gestion des données',
