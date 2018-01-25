@@ -14,3 +14,7 @@ export function getCurrentUser() {
 export function setCurrentUser(user) {
   return localStorage.setItem('floriscope-current-user', JSON.stringify(user));
 }
+
+export function clearCurrentUser() {
+  return localStorage.removeItem('floriscope-current-user');
+}

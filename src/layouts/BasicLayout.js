@@ -92,7 +92,7 @@ class BasicLayout extends React.PureComponent {
   getPageTitle() {
     const { routerData, location } = this.props;
     const { pathname } = location;
-    let title = 'Ant Design Pro';
+    let title = 'Floriscope - Admin';
     if (routerData[pathname] && routerData[pathname].name) {
       title = `${routerData[pathname].name} - Floriscope`;
     }
@@ -133,7 +133,7 @@ class BasicLayout extends React.PureComponent {
     }
     if (key === 'logout') {
       this.props.dispatch({
-        type: 'login/logout',
+        type: 'signin/logout',
       });
     }
   };

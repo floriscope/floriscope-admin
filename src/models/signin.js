@@ -41,18 +41,18 @@ export default {
         const pathname = yield select(state => state.routing.location.pathname);
         // add the parameters in the url
         urlParams.searchParams.set('redirect', pathname);
-        window.history.replaceState(null, 'login', urlParams.href);
+        window.history.replaceState(null, 'signin', urlParams.href);
       } finally {
         // yield put(routerRedux.push('/user/login'));
         // Login out after permission changes to admin or user
         // The refresh will automatically redirect to the login page
         yield put({
-          type: 'changeLoginStatus',
+          type: 'logout',
           payload: {
+            role: 'guest',
             status: false,
             httpCode: undefined,
             currentAuthority: 'guest',
-            user: {},
           },
         });
         window.location.reload();
@@ -69,6 +69,17 @@ export default {
         status: payload.user.logged,
         httpCode: payload.status,
         type: 'account',
+      };
+    },
+    logout(state, { payload }) {
+      setAuthority(payload.currentAuthority);
+      localStorage.removeItem('floriscope-current-user');
+      return {
+        ...state,
+        status: payload.status,
+        httpCode: payload.httpCode,
+        role: 'guest',
+        type: payload.type,
       };
     },
     loginFailed(state, { payload }) {
