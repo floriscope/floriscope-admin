@@ -52,6 +52,7 @@ export default {
             status: false,
             httpCode: undefined,
             currentAuthority: 'guest',
+            user: {},
           },
         });
         window.location.reload();

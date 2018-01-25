@@ -11,6 +11,12 @@ import styles from './index.less';
 const { Header } = Layout;
 
 export default class GlobalHeader extends PureComponent {
+  @Debounce(600)
+  static triggerResizeEvent() {
+    const event = document.createEvent('HTMLEvents');
+    event.initEvent('resize', true, false);
+    window.dispatchEvent(event);
+  }
   componentWillUnmount() {
     this.triggerResizeEvent.cancel();
   }
@@ -50,13 +56,6 @@ export default class GlobalHeader extends PureComponent {
     onCollapse(!collapsed);
     this.triggerResizeEvent();
   };
-  @Debounce(600)
-  triggerResizeEvent() {
-    // eslint-disable-line
-    const event = document.createEvent('HTMLEvents');
-    event.initEvent('resize', true, false);
-    window.dispatchEvent(event);
-  }
   render() {
     const {
       currentUser,
@@ -77,7 +76,7 @@ export default class GlobalHeader extends PureComponent {
           <Icon type="setting" />Paramètres
         </Menu.Item>
         <Menu.Item key="triggerError">
-          <Icon type="close-circle" />Pages d'erreur
+          <Icon type="close-circle" />Error Pages
         </Menu.Item>
         <Menu.Divider />
         <Menu.Item key="logout">
@@ -141,11 +140,15 @@ export default class GlobalHeader extends PureComponent {
               emptyImage="https://gw.alipayobjects.com/zos/rmsportal/HsIsxMZiWKrNUavQUXqx.svg"
             />
           </NoticeIcon>
-          {currentUser.name ? (
+          {currentUser.email ? (
             <Dropdown overlay={menu}>
               <span className={`${styles.action} ${styles.account}`}>
-                <Avatar size="small" className={styles.avatar} src={currentUser.avatar} />
-                <span className={styles.name}>{currentUser.name}</span>
+                <Avatar
+                  size="small"
+                  className={styles.avatar}
+                  src={currentUser.profile.avatar_url}
+                />
+                <span className={styles.name}>{currentUser.email}</span>
               </span>
             </Dropdown>
           ) : (
