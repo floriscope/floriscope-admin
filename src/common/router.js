@@ -86,7 +86,7 @@ export const getRouterData = (app) => {
       // name: '工作台',
       // authority: 'admin',
     },
-    '/listes': {
+    '/collections': {
       component: dynamicWrapper(app, ['collection'], () => import('../routes/Liste/ListeAll')),
     },
     '/c/:uuid': {

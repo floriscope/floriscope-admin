@@ -24,7 +24,7 @@ const menuData = [
   {
     name: 'Gestion des listes',
     icon: 'table',
-    path: 'listes',
+    path: 'collections',
   },
   {
     name: 'Gestion de la photothèque',
