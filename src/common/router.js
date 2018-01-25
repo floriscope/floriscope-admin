@@ -100,6 +100,9 @@ export const getRouterData = (app) => {
     '/data': {
       component: dynamicWrapper(app, [], () => import('../routes/Exception/404')),
     },
+    '/instant-search': {
+      component: dynamicWrapper(app, [], () => import('../routes/InstantSearch/Connectors')),
+    },
     '/schema/criteres': {
       component: dynamicWrapper(app, [], () => import('../routes/Schema/Critera')),
     },

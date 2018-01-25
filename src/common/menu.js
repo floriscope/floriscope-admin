@@ -38,6 +38,12 @@ const menuData = [
     authority: 'admin',
   },
   {
+    name: 'InstantSearch',
+    icon: 'search',
+    path: 'instant-search',
+    authority: 'admin',
+  },
+  {
     name: 'Gestion du schéma',
     icon: 'api',
     path: 'schema',
