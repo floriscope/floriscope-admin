@@ -97,6 +97,11 @@ export const getRouterData = (app) => {
     '/phototheque': {
       component: dynamicWrapper(app, ['list'], () => import('../routes/Phototheque/Phototheque')),
     },
+    '/i/:uuid': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/Illustration/IllustrationPreview')
+      ),
+    },
     '/data': {
       component: dynamicWrapper(app, [], () => import('../routes/Exception/404')),
     },

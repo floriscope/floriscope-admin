@@ -1,20 +1,19 @@
-import React, { PureComponent, Component } from 'react';
+import React, { PureComponent } from 'react';
 import moment from 'moment';
 import { connect } from 'dva';
+import { Link } from 'dva/router';
 import { Row, Col, Form, Card, Select, List, Input, Button, Icon } from 'antd';
 import { InstantSearch } from 'react-instantsearch/dom';
-import { connectSearchBox, connectHits } from 'react-instantsearch/connectors';
+import { connectSearchBox, connectHits, connectStateResults } from 'react-instantsearch/connectors';
 import truncate from 'lodash/truncate';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import StandardFormRow from '../../components/StandardFormRow';
 import TagSelect from '../../components/TagSelect';
-import AvatarList from '../../components/AvatarList';
 
 import styles from './Connectors.less';
 
 const { Option } = Select;
 const FormItem = Form.Item;
-const pageSize = 8;
 
 /* eslint react/no-array-index-key: 0 */
 @Form.create()
@@ -23,52 +22,23 @@ const pageSize = 8;
   loading: loading.models.list,
 }))
 export default class CoverCardList extends PureComponent {
-  componentDidMount() {
-    this.fetchMore();
-  }
+  componentDidMount() {}
 
   fetchMore = () => {
-    this.props.dispatch({
-      type: 'list/appendFetch',
-      payload: {
-        count: pageSize,
-      },
-    });
+    // console.log('fetchMore() unplugged...');
   };
 
   handleFormSubmit = () => {
-    const { form, dispatch } = this.props;
-    // setTimeout
-    setTimeout(() => {
-      form.validateFields((err) => {
-        if (!err) {
-          // eslint-disable-next-line
-          dispatch({
-            type: 'list/appendFetch',
-            payload: {
-              count: 8,
-            },
-          });
-        }
-      });
-    }, 0);
+    // const { form, dispatch } = this.props;
+    // console.log('handleFormSubmit() unplugged...');
   };
 
   render() {
-    const { list: { list }, loading, form } = this.props;
+    const { loading, form } = this.props;
     const { getFieldDecorator } = form;
+    // console.log(this.props);
 
-    const mainSearch = (
-      <div style={{ textAlign: 'center' }}>
-        <Input.Search
-          placeholder="Rechercher parmi les images"
-          enterButton="Lancer"
-          size="large"
-          onSearch={this.handleFormSubmit}
-          style={{ width: 522 }}
-        />
-      </div>
-    );
+    // SearchBox connector
     const SearchBox = ({ currentRefinement, refine }) => (
       <div style={{ textAlign: 'center' }}>
         <Input.Search
@@ -77,19 +47,21 @@ export default class CoverCardList extends PureComponent {
           size="large"
           value={currentRefinement}
           onChange={e => refine(e.target.value)}
+          onSearch={this.handleFormSubmit}
           style={{ width: 522 }}
         />
       </div>
     );
     const ConnectedMainSearch = connectSearchBox(SearchBox);
 
+    // Hits connector
     const Hits = ({ hits }) => {
       // console.log(hits);
       return hits ? (
         <List
           rowKey="id"
           loading={loading}
-          loadMore={loadMore}
+          loadMore={<LoadMoreButton />}
           grid={{ gutter: 24, lg: 4, md: 3, sm: 2, xs: 1 }}
           dataSource={hits}
           renderItem={item => (
@@ -109,11 +81,11 @@ export default class CoverCardList extends PureComponent {
               >
                 <Card.Meta
                   title={
-                    <a href="#">
+                    <Link to={`/i/${item.id}`}>
                       {truncate(item.name, {
                         length: 20,
                       })}
-                    </a>
+                    </Link>
                   }
                   description={item.rights}
                 />
@@ -130,41 +102,6 @@ export default class CoverCardList extends PureComponent {
     };
     const ConnectedHits = connectHits(Hits);
 
-    const cardList = list ? (
-      <List
-        rowKey="id"
-        loading={loading}
-        loadMore={loadMore}
-        grid={{ gutter: 24, lg: 4, md: 3, sm: 2, xs: 1 }}
-        dataSource={list}
-        renderItem={item => (
-          <List.Item>
-            <Card
-              className={styles.card}
-              hoverable
-              cover={<img alt={item.title} src={item.cover} height={154} />}
-            >
-              <Card.Meta title={<a href="#">{item.title}</a>} description={item.subDescription} />
-              <div className={styles.cardItemContent}>
-                <span>{moment(item.updatedAt).fromNow()}</span>
-                <div className={styles.avatarList}>
-                  <AvatarList size="mini">
-                    {item.members.map((member, i) => (
-                      <AvatarList.Item
-                        key={`${item.id}-avatar-${i}`}
-                        src={member.avatar}
-                        tips={member.name}
-                      />
-                    ))}
-                  </AvatarList>
-                </div>
-              </div>
-            </Card>
-          </List.Item>
-        )}
-      />
-    ) : null;
-
     const formItemLayout = {
       wrapperCol: {
         xs: { span: 24 },
@@ -172,20 +109,22 @@ export default class CoverCardList extends PureComponent {
       },
     };
 
-    const loadMore =
-      list.length > 0 ? (
-        <div style={{ textAlign: 'center', marginTop: 16 }}>
-          <Button onClick={this.fetchMore} style={{ paddingLeft: 48, paddingRight: 48 }}>
-            {loading ? (
-              <span>
-                <Icon type="loading" /> Chargement...
-              </span>
-            ) : (
-              'Plus de résultats'
-            )}
-          </Button>
-        </div>
-      ) : null;
+    const LoadMoreButton = connectStateResults(
+      ({ searchResults }) =>
+        (searchResults && searchResults.nbHits !== 0 ? (
+          <div style={{ textAlign: 'center', marginTop: 16 }}>
+            <Button onClick={this.fetchMore} style={{ paddingLeft: 48, paddingRight: 48 }}>
+              {loading ? (
+                <span>
+                  <Icon type="loading" /> Chargement...
+                </span>
+              ) : (
+                'Plus de résultats'
+              )}
+            </Button>
+          </div>
+        ) : null)
+    );
 
     return (
       <InstantSearch
@@ -193,10 +132,9 @@ export default class CoverCardList extends PureComponent {
         appId={`${process.env.ALGOLIA_APP_ID}`}
         apiKey={`${process.env.ALGOLIA_SEARCH_KEY}`}
       >
-        <PageHeaderLayout content={mainSearch}>
+        <PageHeaderLayout content={<ConnectedMainSearch />}>
           <div className={styles.coverCardList}>
             <Card bordered={false}>
-              <ConnectedMainSearch />
               <Form layout="inline">
                 <StandardFormRow title="Mots-Clés" block style={{ paddingBottom: 11 }}>
                   <FormItem>
@@ -258,8 +196,6 @@ export default class CoverCardList extends PureComponent {
             <div className={styles.cardList}>
               <ConnectedHits />
             </div>
-            <div className={styles.cardList}>{cardList}</div>
-            <div>{loadMore}</div>
           </div>
         </PageHeaderLayout>
       </InstantSearch>
