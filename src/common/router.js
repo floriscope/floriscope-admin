@@ -89,10 +89,10 @@ export const getRouterData = (app) => {
       // authority: 'admin',
     },
     '/collections': {
-      component: dynamicWrapper(app, ['collection'], () => import('../routes/Liste/ListeAll')),
+      component: dynamicWrapper(app, ['collection'], () => import('../routes/Collection/CollectionsAll')),
     },
     '/c/:uuid': {
-      component: dynamicWrapper(app, [], () => import('../routes/Liste/Liste')),
+      component: dynamicWrapper(app, [], () => import('../routes/Collection/CollectionPreview')),
     },
     '/phototheque': {
       component: dynamicWrapper(app, ['list'], () => import('../routes/Phototheque/Phototheque')),

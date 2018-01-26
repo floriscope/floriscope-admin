@@ -9,7 +9,7 @@ export default class IllustrationPreview extends PureComponent {
     return (
       <div>
         <div key={this.props.match.params.uuid}>
-          Illustration Preview with ID: {this.props.match.params.uuid}
+          Collection Preview with UUID: {this.props.match.params.uuid}
         </div>
       </div>
     );

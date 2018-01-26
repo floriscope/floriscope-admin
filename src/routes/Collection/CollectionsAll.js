@@ -1,11 +1,10 @@
 import { Avatar, Button, Card, Dropdown, Icon, Input, List, Menu, Progress, Radio } from 'antd';
 import React, { PureComponent } from 'react';
-import { Route, Switch } from 'dva/router';
 import { connect } from 'dva';
 import moment from 'moment';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import Liste from './Liste.js';
-import styles from './ListeAll.less';
+import { getCurrentUser } from '../../utils/authority';
+import styles from './CollectionsAll.less';
 
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
@@ -15,14 +14,16 @@ const { Search } = Input;
   collection,
   loading: loading.models.collection,
 }))
-export default class ListeAll extends PureComponent {
+export default class CollectionsAll extends PureComponent {
   componentDidMount() {
+    const currentUser = JSON.parse(getCurrentUser());
+    console.log(currentUser);
+    const authToken = currentUser.auth_token;
     this.props.dispatch({
       type: 'collection/fetch',
       payload: {
         count: 5,
-        token:
-          'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiZ2FldGFuQHZlZ2ViYXNlLmlvIiwiZXhwIjoxNTE2OTEzOTg4fQ.rr7wKPJyn_WO0YR-j4CVQrJfcsUi9cEZRK6T9O9KeW0',
+        token: authToken,
       },
     });
   }
@@ -94,9 +95,6 @@ export default class ListeAll extends PureComponent {
 
     return (
       <PageHeaderLayout>
-        <Switch>
-          <Route path="/collection/:slug" component={Liste} />
-        </Switch>
         <div className={styles.standardList}>
           <Card
             className={styles.listCard}
