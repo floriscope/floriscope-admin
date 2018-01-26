@@ -1,9 +1,23 @@
-import { Avatar, Button, Card, Dropdown, Icon, Input, List, Menu, Progress, Radio } from 'antd';
+import {
+  Avatar,
+  Badge,
+  Button,
+  Card,
+  Dropdown,
+  Icon,
+  Input,
+  List,
+  Menu,
+  Progress,
+  Radio,
+} from 'antd';
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
+import { Link } from 'dva/router';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import { getCurrentUser } from '../../utils/authority';
+import { keysToCamelCase } from '../../utils/utils';
 import styles from './CollectionsAll.less';
 
 const RadioButton = Radio.Button;
@@ -16,9 +30,10 @@ const { Search } = Input;
 }))
 export default class CollectionsAll extends PureComponent {
   componentDidMount() {
-    const currentUser = JSON.parse(getCurrentUser());
+    const currentUser = keysToCamelCase(JSON.parse(getCurrentUser()));
+    // console.log(keysToCamelCase(currentUser));
     console.log(currentUser);
-    const authToken = currentUser.auth_token;
+    const { authToken } = currentUser;
     this.props.dispatch({
       type: 'collection/fetch',
       payload: {
@@ -29,7 +44,8 @@ export default class CollectionsAll extends PureComponent {
   }
 
   render() {
-    const { collection: { collections }, loading } = this.props;
+    const { loading } = this.props;
+    const { collections } = keysToCamelCase(this.props.collection);
     console.log(collections);
 
     const extraContent = (
@@ -58,18 +74,22 @@ export default class CollectionsAll extends PureComponent {
       total: 50,
     };
 
-    const ListContent = ({ data: { owner, createdAt, percent, status } }) => (
+    const ListContent = ({ data: { category, updatedAt, percent = 10, isPublished } }) => (
       <div className={styles.listContent}>
         <div className={styles.listContentItem}>
-          <span>Contact</span>
-          <p>{owner}</p>
+          <p>{category}</p>
         </div>
         <div className={styles.listContentItem}>
-          <span>Créée le</span>
-          <p>{moment(createdAt).format('YYYY-MM-DD hh:mm')}</p>
+          <span>Mise à jour le</span>
+          <p>{moment(updatedAt).format('DD-MM-YYYY')}</p>
         </div>
         <div className={styles.listContentItem}>
-          <Progress percent={percent} status={status} strokeWidth={6} style={{ width: 180 }} />
+          <Progress
+            percent={percent}
+            status={isPublished ? 'active' : 'exception'}
+            strokeWidth={6}
+            style={{ width: 180 }}
+          />
         </div>
       </div>
     );
@@ -114,10 +134,18 @@ export default class CollectionsAll extends PureComponent {
               pagination={paginationProps}
               dataSource={collections}
               renderItem={item => (
-                <List.Item actions={[<a>Voir</a>, <MoreBtn />]}>
+                <List.Item actions={[<Link to={`/c/${item.uuid}`}>Voir</Link>, <MoreBtn />]}>
                   <List.Item.Meta
-                    avatar={<Avatar src={item.logo} shape="square" size="large" />}
-                    title={<a href={item.href}>{item.title}</a>}
+                    avatar={
+                      <Badge count={10000} overflowCount={item.specimens_count}>
+                        <Avatar src={item.image_thumb} shape="square" size="large" />
+                      </Badge>
+                    }
+                    title={
+                      <Link to={`/c/${item.uuid}`} style={{ marginLeft: '24px' }}>
+                        {item.title}
+                      </Link>
+                    }
                     description={item.subDescription}
                   />
                   <ListContent data={item} />
