@@ -88,11 +88,22 @@ export const getRouterData = (app) => {
       // name: '工作台',
       // authority: 'admin',
     },
-    '/collections': {
-      component: dynamicWrapper(app, ['collection'], () => import('../routes/Collection/CollectionsAll')),
+    '/collections/all': {
+      component: dynamicWrapper(app, ['collection'], () =>
+        import('../routes/Collection/CollectionsAll')
+      ),
     },
-    '/c/:uuid': {
+    '/collections/new': {
+      component: dynamicWrapper(app, [], () => import('../routes/Exception/403')),
+      exact: true,
+    },
+    '/c/:uuid/preview': {
       component: dynamicWrapper(app, [], () => import('../routes/Collection/CollectionPreview')),
+      exact: true,
+    },
+    '/c/:uuid/specimens': {
+      component: dynamicWrapper(app, [], () => import('../routes/Exception/403')),
+      exact: true,
     },
     '/phototheque': {
       component: dynamicWrapper(app, ['list'], () => import('../routes/Phototheque/Phototheque')),

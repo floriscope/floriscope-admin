@@ -32,7 +32,7 @@ export default class CollectionsAll extends PureComponent {
   componentDidMount() {
     const currentUser = keysToCamelCase(JSON.parse(getCurrentUser()));
     // console.log(keysToCamelCase(currentUser));
-    console.log(currentUser);
+    // console.log(currentUser);
     const { authToken } = currentUser;
     this.props.dispatch({
       type: 'collection/fetch',
@@ -46,7 +46,7 @@ export default class CollectionsAll extends PureComponent {
   render() {
     const { loading } = this.props;
     const { collections } = keysToCamelCase(this.props.collection);
-    console.log(collections);
+    // console.log(this.props);
 
     const extraContent = (
       <div className={styles.extraContent}>
@@ -94,19 +94,19 @@ export default class CollectionsAll extends PureComponent {
       </div>
     );
 
-    const menu = (
+    const SubMenu = ({ itemId }) => (
       <Menu>
         <Menu.Item>
-          <a>Éditer la liste</a>
+          <Link to={`/c/${itemId}/edit`}>Éditer la liste</Link>
         </Menu.Item>
         <Menu.Item>
-          <a>Gérer les plantes</a>
+          <Link to={`/c/${itemId}/specimens`}>Gérer les plante</Link>
         </Menu.Item>
       </Menu>
     );
 
-    const MoreBtn = () => (
-      <Dropdown overlay={menu}>
+    const MoreBtn = ({ itemId }) => (
+      <Dropdown overlay={<SubMenu itemId={itemId} />}>
         <a>
           Actions <Icon type="down" />
         </a>
@@ -134,11 +134,16 @@ export default class CollectionsAll extends PureComponent {
               pagination={paginationProps}
               dataSource={collections}
               renderItem={item => (
-                <List.Item actions={[<Link to={`/c/${item.uuid}`}>Voir</Link>, <MoreBtn />]}>
+                <List.Item
+                  actions={[
+                    <Link to={`/c/${item.uuid}/preview`}>Voir</Link>,
+                    <MoreBtn itemId={item.uuid} />,
+                  ]}
+                >
                   <List.Item.Meta
                     avatar={
-                      <Badge count={10000} overflowCount={item.specimens_count}>
-                        <Avatar src={item.image_thumb} shape="square" size="large" />
+                      <Badge count={10000} overflowCount={item.specimensCount}>
+                        <Avatar src={item.imageThumb} shape="square" size="large" />
                       </Badge>
                     }
                     title={
