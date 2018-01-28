@@ -1,11 +1,24 @@
-import { Avatar, Button, Card, Dropdown, Icon, Input, List, Menu, Progress, Radio } from 'antd';
+import {
+  Avatar,
+  Badge,
+  Button,
+  Card,
+  Dropdown,
+  Icon,
+  Input,
+  List,
+  Menu,
+  Progress,
+  Radio,
+} from 'antd';
 import React, { PureComponent } from 'react';
-import { Route, Switch } from 'dva/router';
 import { connect } from 'dva';
 import moment from 'moment';
+import { Link } from 'dva/router';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import Liste from './Liste.js';
-import styles from './ListeAll.less';
+import { getCurrentUser } from '../../utils/authority';
+import { keysToCamelCase } from '../../utils/utils';
+import styles from './CollectionsAll.less';
 
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
@@ -15,21 +28,25 @@ const { Search } = Input;
   collection,
   loading: loading.models.collection,
 }))
-export default class ListeAll extends PureComponent {
+export default class CollectionsAll extends PureComponent {
   componentDidMount() {
+    const currentUser = keysToCamelCase(JSON.parse(getCurrentUser()));
+    // console.log(keysToCamelCase(currentUser));
+    // console.log(currentUser);
+    const { authToken } = currentUser;
     this.props.dispatch({
       type: 'collection/fetch',
       payload: {
         count: 5,
-        token:
-          'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiZ2FldGFuQHZlZ2ViYXNlLmlvIiwiZXhwIjoxNTE2OTEzOTg4fQ.rr7wKPJyn_WO0YR-j4CVQrJfcsUi9cEZRK6T9O9KeW0',
+        token: authToken,
       },
     });
   }
 
   render() {
-    const { collection: { collections }, loading } = this.props;
-    console.log(collections);
+    const { loading } = this.props;
+    const { collections } = keysToCamelCase(this.props.collection);
+    // console.log(this.props);
 
     const extraContent = (
       <div className={styles.extraContent}>
@@ -57,35 +74,39 @@ export default class ListeAll extends PureComponent {
       total: 50,
     };
 
-    const ListContent = ({ data: { owner, createdAt, percent, status } }) => (
+    const ListContent = ({ data: { category, updatedAt, percent = 10, isPublished } }) => (
       <div className={styles.listContent}>
         <div className={styles.listContentItem}>
-          <span>Contact</span>
-          <p>{owner}</p>
+          <p>{category}</p>
         </div>
         <div className={styles.listContentItem}>
-          <span>Créée le</span>
-          <p>{moment(createdAt).format('YYYY-MM-DD hh:mm')}</p>
+          <span>Mise à jour le</span>
+          <p>{moment(updatedAt).format('DD-MM-YYYY')}</p>
         </div>
         <div className={styles.listContentItem}>
-          <Progress percent={percent} status={status} strokeWidth={6} style={{ width: 180 }} />
+          <Progress
+            percent={percent}
+            status={isPublished ? 'active' : 'exception'}
+            strokeWidth={6}
+            style={{ width: 180 }}
+          />
         </div>
       </div>
     );
 
-    const menu = (
+    const SubMenu = ({ itemId }) => (
       <Menu>
         <Menu.Item>
-          <a>Éditer la liste</a>
+          <Link to={`/c/${itemId}/edit`}>Éditer la liste</Link>
         </Menu.Item>
         <Menu.Item>
-          <a>Gérer les plantes</a>
+          <Link to={`/c/${itemId}/specimens`}>Gérer les plante</Link>
         </Menu.Item>
       </Menu>
     );
 
-    const MoreBtn = () => (
-      <Dropdown overlay={menu}>
+    const MoreBtn = ({ itemId }) => (
+      <Dropdown overlay={<SubMenu itemId={itemId} />}>
         <a>
           Actions <Icon type="down" />
         </a>
@@ -94,9 +115,6 @@ export default class ListeAll extends PureComponent {
 
     return (
       <PageHeaderLayout>
-        <Switch>
-          <Route path="/collection/:slug" component={Liste} />
-        </Switch>
         <div className={styles.standardList}>
           <Card
             className={styles.listCard}
@@ -116,10 +134,23 @@ export default class ListeAll extends PureComponent {
               pagination={paginationProps}
               dataSource={collections}
               renderItem={item => (
-                <List.Item actions={[<a>Voir</a>, <MoreBtn />]}>
+                <List.Item
+                  actions={[
+                    <Link to={`/c/${item.uuid}/preview`}>Voir</Link>,
+                    <MoreBtn itemId={item.uuid} />,
+                  ]}
+                >
                   <List.Item.Meta
-                    avatar={<Avatar src={item.logo} shape="square" size="large" />}
-                    title={<a href={item.href}>{item.title}</a>}
+                    avatar={
+                      <Badge count={10000} overflowCount={item.specimensCount}>
+                        <Avatar src={item.imageThumb} shape="square" size="large" />
+                      </Badge>
+                    }
+                    title={
+                      <Link to={`/c/${item.uuid}`} style={{ marginLeft: '24px' }}>
+                        {item.title}
+                      </Link>
+                    }
                     description={item.subDescription}
                   />
                   <ListContent data={item} />

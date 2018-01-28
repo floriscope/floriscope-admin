@@ -1,4 +1,5 @@
 import moment from 'moment';
+import _ from 'lodash';
 
 export function fixedZero(val) {
   return val * 1 < 10 ? `0${val}` : val;
@@ -156,4 +157,33 @@ const reg = /(((^https?:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-
 
 export function isUrl(path) {
   return reg.test(path);
+}
+
+/* @example
+ *   import keysToCamelCase from './snakeToCamelCase';
+ *   keysToCamelCase({bad_key: 1});   => {badKey: 1}
+ *   keysToCamelCase([{bad_key: 1}]); => [{badKey: 1}]
+ */
+
+export function keysToCamelCase(object) {
+  let camelCaseObject = _.cloneDeep(object);
+
+  if (_.isArray(camelCaseObject)) {
+    return _.map(camelCaseObject, keysToCamelCase);
+  } else {
+    camelCaseObject = _.mapKeys(camelCaseObject, (value, key) => {
+      return _.camelCase(key);
+    });
+
+    // Recursively apply throughout object
+    return _.mapValues(camelCaseObject, (value) => {
+      if (_.isPlainObject(value)) {
+        return keysToCamelCase(value);
+      } else if (_.isArray(value)) {
+        return _.map(value, keysToCamelCase);
+      } else {
+        return value;
+      }
+    });
+  }
 }

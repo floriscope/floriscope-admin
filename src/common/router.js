@@ -88,17 +88,36 @@ export const getRouterData = (app) => {
       // name: '工作台',
       // authority: 'admin',
     },
-    '/collections': {
-      component: dynamicWrapper(app, ['collection'], () => import('../routes/Liste/ListeAll')),
+    '/collections/all': {
+      component: dynamicWrapper(app, ['collection'], () =>
+        import('../routes/Collection/CollectionsAll')
+      ),
     },
-    '/c/:uuid': {
-      component: dynamicWrapper(app, [], () => import('../routes/Liste/Liste')),
+    '/collections/new': {
+      component: dynamicWrapper(app, [], () => import('../routes/Exception/403')),
+      exact: true,
+    },
+    '/c/:uuid/preview': {
+      component: dynamicWrapper(app, [], () => import('../routes/Collection/CollectionPreview')),
+      exact: true,
+    },
+    '/c/:uuid/specimens': {
+      component: dynamicWrapper(app, [], () => import('../routes/Exception/403')),
+      exact: true,
     },
     '/phototheque': {
       component: dynamicWrapper(app, ['list'], () => import('../routes/Phototheque/Phototheque')),
     },
+    '/i/:uuid': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/Illustration/IllustrationPreview')
+      ),
+    },
     '/data': {
       component: dynamicWrapper(app, [], () => import('../routes/Exception/404')),
+    },
+    '/instant-search': {
+      component: dynamicWrapper(app, ['list'], () => import('../routes/InstantSearch/Connectors')),
     },
     '/schema/criteres': {
       component: dynamicWrapper(app, [], () => import('../routes/Schema/Critera')),

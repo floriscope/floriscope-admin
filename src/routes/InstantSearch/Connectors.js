@@ -10,7 +10,7 @@ import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import StandardFormRow from '../../components/StandardFormRow';
 import TagSelect from '../../components/TagSelect';
 
-import styles from './Phototheque.less';
+import styles from './Connectors.less';
 
 const { Option } = Select;
 const FormItem = Form.Item;
