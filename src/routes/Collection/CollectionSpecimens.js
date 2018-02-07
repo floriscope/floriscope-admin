@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
+import { routerRedux } from 'dva/router';
 import {
   Row,
   Col,
@@ -24,6 +25,8 @@ import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import styles from './CollectionSpecimens.less';
 
 moment.locale('fr');
+
+const ButtonGroup = Button.Group;
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -195,6 +198,14 @@ export default class TableList extends PureComponent {
     });
   };
 
+  backToCollectionIndex = () => {
+    this.props.dispatch(routerRedux.push('/collections/all'));
+  }
+
+  goToCollectionEdit = () => {
+    this.props.dispatch(routerRedux.push(`/c/${this.props.match.params.uuid}/edit`));
+  }
+
   renderSimpleForm() {
     const { getFieldDecorator } = this.props.form;
     return (
@@ -326,8 +337,32 @@ export default class TableList extends PureComponent {
       handleModalVisible: this.handleModalVisible,
     };
 
+    const headerMenu = (
+      <Menu>
+        <Menu.Item key="1">Import par lot</Menu.Item>
+        <Menu.Item key="2">Gestion en mode carte</Menu.Item>
+      </Menu>
+    );
+
+    const action = (
+      <div>
+        <ButtonGroup>
+          <Button icon="left" onClick={this.backToCollectionIndex}>Retour aux listes</Button>
+          <Button type="primary" onClick={this.goToCollectionEdit}>Editer la liste</Button>
+          <Dropdown overlay={headerMenu} placement="bottomRight">
+            <Button><Icon type="ellipsis" /></Button>
+          </Dropdown>
+        </ButtonGroup>
+      </div>
+    );
+
     return (
-      <PageHeaderLayout title="Titre de la liste" hideInBreadcrumb >
+      <PageHeaderLayout
+        title="Titre de la liste"
+        logo={<img alt="" src="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png" />}
+        action={action}
+        hideInBreadcrumb
+      >
         <Card bordered={false}>
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderForm()}</div>
