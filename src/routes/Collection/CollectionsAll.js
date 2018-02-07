@@ -20,7 +20,7 @@ import {
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
-import { Link } from 'dva/router';
+import { Link, routerRedux } from 'dva/router';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import { getCurrentUser } from '../../utils/authority';
 import { keysToCamelCase } from '../../utils/utils';
@@ -149,6 +149,7 @@ const CreateForm = Form.create()((props) => {
 export default class CollectionsAll extends PureComponent {
   state = {
     modalVisible: false,
+    selectedListId: null,
     // expandForm: false,
     // formValues: {},
   };
@@ -172,6 +173,15 @@ export default class CollectionsAll extends PureComponent {
       modalVisible: !!flag,
     });
   };
+
+  handleActionsMenuClick = (e) => {
+    // console.log(e);
+    notification.open({
+      message: 'ActionsMenu Notification (temp)',
+      description: `key: ${e.key} selectedList: ${this.state.selectedListId} linkName: ${e.item.props.linkName}`,
+    });
+    this.props.dispatch(routerRedux.push(`/c/${this.state.selectedListId}/${e.item.props.linkName}`));
+  }
 
   // handleAdd = (fields) => {
   //   console.log(fields);
@@ -235,19 +245,15 @@ export default class CollectionsAll extends PureComponent {
       </div>
     );
 
-    const SubMenu = ({ itemId }) => (
-      <Menu>
-        <Menu.Item>
-          <Link to={`/c/${itemId}/edit`}>Éditer la liste</Link>
-        </Menu.Item>
-        <Menu.Item>
-          <Link to={`/c/${itemId}/specimens`}>Gérer les plante</Link>
-        </Menu.Item>
+    const actionsMenu = (
+      <Menu onClick={this.handleActionsMenuClick}>
+        <Menu.Item key="1" linkName="edit">Éditer la liste</Menu.Item>
+        <Menu.Item key="2" linkName="specimens">Gérer les plantes</Menu.Item>
       </Menu>
     );
 
     const MoreBtn = ({ itemId }) => (
-      <Dropdown overlay={<SubMenu itemId={itemId} />}>
+      <Dropdown overlay={actionsMenu} placement="bottomRight" onClick={this.setState({ selectedListId: itemId })}>
         <a>
           Actions <Icon type="down" />
         </a>
@@ -271,7 +277,7 @@ export default class CollectionsAll extends PureComponent {
               icon="plus"
               onClick={() => this.handleModalVisible(true)}
             >
-              Ajouter une entrée
+              Ajouter une liste
             </Button>
             <List
               size="large"
