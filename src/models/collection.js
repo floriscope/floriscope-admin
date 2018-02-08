@@ -1,4 +1,4 @@
-import { getAllCollections } from '../services/vegebaseIO.js';
+import { getAllCollections } from '../services/vegebase-io.js';
 
 export default {
   namespace: 'collection',
