@@ -73,6 +73,7 @@ export default class TableList extends PureComponent {
   };
 
   componentDidMount() {
+    // console.log(this.props);
     const { dispatch } = this.props;
     dispatch({
       type: 'rule/fetch',

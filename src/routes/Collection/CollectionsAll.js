@@ -149,7 +149,6 @@ const CreateForm = Form.create()((props) => {
 export default class CollectionsAll extends PureComponent {
   state = {
     modalVisible: false,
-    selectedListId: null,
     // expandForm: false,
     // formValues: {},
   };
@@ -168,19 +167,33 @@ export default class CollectionsAll extends PureComponent {
     });
   }
 
+  setSelectedList = (item, e) => {
+    console.log(item, e);
+    this.setState({
+      selectedList: item,
+    });
+    return e;
+  };
+
   handleModalVisible = (flag) => {
     this.setState({
       modalVisible: !!flag,
     });
   };
 
+
   handleActionsMenuClick = (e) => {
     // console.log(e);
     notification.open({
       message: 'ActionsMenu Notification (temp)',
-      description: `key: ${e.key} selectedList: ${this.state.selectedListId} linkName: ${e.item.props.linkName}`,
+      description: `key: ${e.key} selectedList: ${e.item.props.item} linkName: ${e.item.props.linkName}`,
     });
-    this.props.dispatch(routerRedux.push(`/c/${this.state.selectedListId}/${e.item.props.linkName}`));
+    this.props.dispatch(routerRedux.push({
+      pathname: `/c/${e.item.props.item.uuid}/${e.item.props.linkName}`,
+      state: {
+        item: e.item.props.item,
+      },
+    }));
   }
 
   // handleAdd = (fields) => {
@@ -245,20 +258,24 @@ export default class CollectionsAll extends PureComponent {
       </div>
     );
 
-    const actionsMenu = (
-      <Menu onClick={this.handleActionsMenuClick}>
-        <Menu.Item key="1" linkName="edit">Éditer la liste</Menu.Item>
-        <Menu.Item key="2" linkName="specimens">Gérer les plantes</Menu.Item>
-      </Menu>
-    );
-
-    const MoreBtn = ({ itemId }) => (
-      <Dropdown overlay={actionsMenu} placement="bottomRight" onClick={this.setState({ selectedListId: itemId })}>
-        <a>
-          Actions <Icon type="down" />
-        </a>
-      </Dropdown>
-    );
+    const MoreBtn = ({ item }) => {
+      return (
+        <Dropdown
+          overlay={
+            <Menu onClick={e => this.handleActionsMenuClick(e)}>
+              <Menu.Item key="1" item={item} linkName="edit">Éditer la liste</Menu.Item>
+              <Menu.Item key="2" item={item} linkName="specimens">Gérer les plantes</Menu.Item>
+            </Menu>
+          }
+          placement="bottomRight"
+          trigger={['click', 'hover']}
+        >
+          <a>
+            Actions <Icon type="down" />
+          </a>
+        </Dropdown>
+      );
+    };
 
     return (
       <PageHeaderLayout>
@@ -289,7 +306,7 @@ export default class CollectionsAll extends PureComponent {
                 <List.Item
                   actions={[
                     <Link to={`/c/${item.uuid}/preview`}>Voir</Link>,
-                    <MoreBtn itemId={item.uuid} />,
+                    <MoreBtn item={item} />,
                   ]}
                 >
                   <List.Item.Meta
