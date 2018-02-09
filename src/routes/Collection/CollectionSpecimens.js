@@ -19,6 +19,7 @@ import {
 } from 'antd';
 import moment from 'moment';
 import 'moment/locale/fr';
+// import { keysToCamelCase } from '../../utils/utils';
 import StandardTable from '../../components/StandardTable';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
@@ -59,9 +60,10 @@ const CreateForm = Form.create()((props) => {
   );
 });
 
-@connect(({ rule, loading }) => ({
+@connect(({ rule, collection, loading }) => ({
   rule,
-  loading: loading.models.rule,
+  collection,
+  loading: loading.models.collection,
 }))
 @Form.create()
 export default class TableList extends PureComponent {
@@ -77,6 +79,18 @@ export default class TableList extends PureComponent {
     const { dispatch } = this.props;
     dispatch({
       type: 'rule/fetch',
+    });
+    dispatch({
+      type: 'collection/fetchOne',
+      payload: {
+        uuid: this.props.match.params.uuid,
+      },
+    });
+    dispatch({
+      type: 'collection/fetchSpecimens',
+      payload: {
+        uuid: this.props.match.params.uuid,
+      },
     });
   }
 
@@ -322,9 +336,10 @@ export default class TableList extends PureComponent {
   }
 
   render() {
-    // console.log(this.props);
     const { rule: { data }, loading } = this.props;
     const { selectedRows, modalVisible } = this.state;
+    // const { collection, specimens } = keysToCamelCase(this.props.collection);
+    // console.log(this.props);
 
     const menu = (
       <Menu onClick={this.handleMenuClick} selectedKeys={[]}>
@@ -359,8 +374,8 @@ export default class TableList extends PureComponent {
 
     return (
       <PageHeaderLayout
-        title="Titre de la liste"
-        logo={<img alt="" src="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png" />}
+        title={this.props.location.state.item.title}
+        logo={<img alt="" src={this.props.location.state.item.imageThumb} />}
         action={action}
         hideInBreadcrumb
       >

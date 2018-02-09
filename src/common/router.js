@@ -102,7 +102,7 @@ export const getRouterData = (app) => {
       exact: true,
     },
     '/c/:uuid/specimens': {
-      component: dynamicWrapper(app, ['rule'], () => import('../routes/Collection/CollectionSpecimens')),
+      component: dynamicWrapper(app, ['rule', 'collection'], () => import('../routes/Collection/CollectionSpecimens')),
       exact: true,
       hideInBreadcrumb: true,
     },

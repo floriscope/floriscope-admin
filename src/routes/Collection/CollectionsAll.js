@@ -22,7 +22,6 @@ import { connect } from 'dva';
 import moment from 'moment';
 import { Link, routerRedux } from 'dva/router';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import { getCurrentUser } from '../../utils/authority';
 import { keysToCamelCase } from '../../utils/utils';
 import styles from './CollectionsAll.less';
 
@@ -154,26 +153,10 @@ export default class CollectionsAll extends PureComponent {
   };
 
   componentDidMount() {
-    const currentUser = keysToCamelCase(JSON.parse(getCurrentUser()));
-    // console.log(keysToCamelCase(currentUser));
-    // console.log(currentUser);
-    const { authToken } = currentUser;
     this.props.dispatch({
       type: 'collection/fetch',
-      payload: {
-        count: 5,
-        token: authToken,
-      },
     });
   }
-
-  setSelectedList = (item, e) => {
-    console.log(item, e);
-    this.setState({
-      selectedList: item,
-    });
-    return e;
-  };
 
   handleModalVisible = (flag) => {
     this.setState({

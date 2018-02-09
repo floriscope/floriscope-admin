@@ -26,3 +26,21 @@ export async function getAllCollections() {
     // console.log(e);
   }
 }
+export async function getCollection(params) {
+  try {
+    const url = `${ADMIN_BASE_URL}/collections/${params.uuid}`;
+    const collection = await axios.get(url);
+    return collection.data;
+  } catch (e) {
+    // console.log(e);
+  }
+}
+export async function getCollectionSpecimens(params) {
+  try {
+    const url = `${ADMIN_BASE_URL}/collections/${params.uuid}/specimens`;
+    const specimens = await axios.get(url);
+    return specimens.data;
+  } catch (e) {
+    // console.log(e);
+  }
+}
