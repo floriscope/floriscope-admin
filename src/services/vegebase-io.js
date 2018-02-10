@@ -2,7 +2,7 @@ import axios from 'axios';
 import { getCurrentUser } from '../utils/authority';
 import { keysToCamelCase } from '../utils/utils';
 
-const ADMIN_BASE_URL = 'https://api.vegebase.io/admin';
+const ADMIN_BASE_URL = 'http://api.lvh.me:3000/admin';
 
 
 // Alter defaults

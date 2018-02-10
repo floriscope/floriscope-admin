@@ -20,7 +20,8 @@ import {
 import moment from 'moment';
 import 'moment/locale/fr';
 // import { keysToCamelCase } from '../../utils/utils';
-import StandardTable from '../../components/StandardTable';
+// // import StandardTable from '../../components/StandardTable';
+import SpecimensTable from '../../components/SpecimensTable';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
 import styles from './CollectionSpecimens.less';
@@ -75,7 +76,6 @@ export default class TableList extends PureComponent {
   };
 
   componentDidMount() {
-    // console.log(this.props);
     const { dispatch } = this.props;
     dispatch({
       type: 'rule/fetch',
@@ -397,7 +397,7 @@ export default class TableList extends PureComponent {
                 </span>
               )}
             </div>
-            <StandardTable
+            <SpecimensTable
               selectedRows={selectedRows}
               loading={loading}
               data={data}
