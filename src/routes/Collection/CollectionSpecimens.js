@@ -19,8 +19,8 @@ import {
 } from 'antd';
 import moment from 'moment';
 import 'moment/locale/fr';
-// import { keysToCamelCase } from '../../utils/utils';
-// // import StandardTable from '../../components/StandardTable';
+import { keysToCamelCase } from '../../utils/utils';
+// import StandardTable from '../../components/StandardTable';
 import SpecimensTable from '../../components/SpecimensTable';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
@@ -29,6 +29,7 @@ import styles from './CollectionSpecimens.less';
 moment.locale('fr');
 
 const ButtonGroup = Button.Group;
+const { RangePicker } = DatePicker;
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -61,8 +62,7 @@ const CreateForm = Form.create()((props) => {
   );
 });
 
-@connect(({ rule, collection, loading }) => ({
-  rule,
+@connect(({ collection, loading }) => ({
   collection,
   loading: loading.models.collection,
 }))
@@ -77,9 +77,6 @@ export default class TableList extends PureComponent {
 
   componentDidMount() {
     const { dispatch } = this.props;
-    dispatch({
-      type: 'rule/fetch',
-    });
     dispatch({
       type: 'collection/fetchOne',
       payload: {
@@ -199,13 +196,13 @@ export default class TableList extends PureComponent {
     });
   };
 
-  handleAdd = (fields) => {
-    this.props.dispatch({
-      type: 'rule/add',
-      payload: {
-        description: fields.desc,
-      },
-    });
+  handleAdd = () => {
+    // this.props.dispatch({
+    //   type: 'rule/add',
+    //   payload: {
+    //     description: fields.desc,
+    //   },
+    // });
 
     message.success('Specimen ajouté avec succès.');
     this.setState({
@@ -227,16 +224,22 @@ export default class TableList extends PureComponent {
       <Form onSubmit={this.handleSearch} layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
-            <FormItem label="Identifiant">
-              {getFieldDecorator('no')(<Input placeholder="Identifiant" />)}
-            </FormItem>
-          </Col>
-          <Col md={8} sm={24}>
             <FormItem label="Statut">
               {getFieldDecorator('status')(
                 <Select placeholder="Sélectionner..." style={{ width: '100%' }}>
                   <Option value="0">Publié</Option>
                   <Option value="1">Non publié</Option>
+                </Select>
+              )}
+            </FormItem>
+          </Col>
+          <Col md={8} sm={24}>
+            <FormItem label="Mode">
+              {getFieldDecorator('mode')(
+                <Select placeholder="Sélectionner..." style={{ width: '100%' }}>
+                  <Option value="0">Autocomplete</Option>
+                  <Option value="1">Import (CSV, Excel)</Option>
+                  <Option value="2">Correction manuelle</Option>
                 </Select>
               )}
             </FormItem>
@@ -265,16 +268,22 @@ export default class TableList extends PureComponent {
       <Form onSubmit={this.handleSearch} layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
-            <FormItem label="Identifiant">
-              {getFieldDecorator('no')(<Input placeholder="Identifiant" />)}
-            </FormItem>
-          </Col>
-          <Col md={8} sm={24}>
             <FormItem label="Statut">
               {getFieldDecorator('status')(
                 <Select placeholder="Sélectionner..." style={{ width: '100%' }}>
                   <Option value="0">Publié</Option>
                   <Option value="1">Non publié</Option>
+                </Select>
+              )}
+            </FormItem>
+          </Col>
+          <Col md={8} sm={24}>
+            <FormItem label="Mode">
+              {getFieldDecorator('mode')(
+                <Select placeholder="Sélectionner..." style={{ width: '100%' }}>
+                  <Option value="0">Autocomplete</Option>
+                  <Option value="1">Import (CSV, Excel)</Option>
+                  <Option value="2">Correction manuelle</Option>
                 </Select>
               )}
             </FormItem>
@@ -286,10 +295,10 @@ export default class TableList extends PureComponent {
           </Col>
         </Row>
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
-          <Col md={8} sm={24}>
+          <Col md={16} sm={24}>
             <FormItem label="Date d'import">
               {getFieldDecorator('date')(
-                <DatePicker style={{ width: '100%' }} placeholder="Définir..." />
+                <RangePicker style={{ width: '100%' }} placeholder={['Date de début', 'Date de fin']} />
               )}
             </FormItem>
           </Col>
@@ -299,16 +308,6 @@ export default class TableList extends PureComponent {
                 <Select placeholder="Sélectionner..." style={{ width: '100%' }}>
                   <Option value="0">Filtre3-0</Option>
                   <Option value="1">Filtre3-1</Option>
-                </Select>
-              )}
-            </FormItem>
-          </Col>
-          <Col md={8} sm={24}>
-            <FormItem label="Filtre4">
-              {getFieldDecorator('status4')(
-                <Select placeholder="Sélectionner..." style={{ width: '100%' }}>
-                  <Option value="0">Filtre4-0</Option>
-                  <Option value="1">Filtre4-1</Option>
                 </Select>
               )}
             </FormItem>
@@ -336,9 +335,10 @@ export default class TableList extends PureComponent {
   }
 
   render() {
-    const { rule: { data }, loading } = this.props;
+    const { loading } = this.props;
     const { selectedRows, modalVisible } = this.state;
-    // const { collection, specimens } = keysToCamelCase(this.props.collection);
+    const { collection } = keysToCamelCase(this.props.collection);
+    const { specimens } = keysToCamelCase(this.props.collection);
     // console.log(this.props);
 
     const menu = (
@@ -363,8 +363,8 @@ export default class TableList extends PureComponent {
     const action = (
       <div>
         <ButtonGroup>
-          <Button icon="left" onClick={this.backToCollectionIndex}>Retour aux listes</Button>
-          <Button type="primary" onClick={this.goToCollectionEdit}>Editer la liste</Button>
+          <Button icon="left" onClick={this.backToCollectionIndex}>Retour</Button>
+          <Button type="primary" onClick={this.goToCollectionEdit}>Editer</Button>
           <Dropdown overlay={headerMenu} placement="bottomRight">
             <Button><Icon type="ellipsis" /></Button>
           </Dropdown>
@@ -374,8 +374,8 @@ export default class TableList extends PureComponent {
 
     return (
       <PageHeaderLayout
-        title={this.props.location.state.item.title}
-        logo={<img alt="" src={this.props.location.state.item.imageThumb} />}
+        title={collection ? collection.title : ''}
+        logo={<img alt="" src={collection ? collection.imageThumbnail : ''} style={{ objectFit: 'cover' }} />}
         action={action}
         hideInBreadcrumb
       >
@@ -397,13 +397,16 @@ export default class TableList extends PureComponent {
                 </span>
               )}
             </div>
-            <SpecimensTable
-              selectedRows={selectedRows}
-              loading={loading}
-              data={data}
-              onSelectRow={this.handleSelectRows}
-              onChange={this.handleStandardTableChange}
-            />
+            {specimens.specimens && (
+              <SpecimensTable
+                selectedRows={selectedRows}
+                loading={loading}
+                data={specimens}
+                onSelectRow={this.handleSelectRows}
+                onChange={this.handleStandardTableChange}
+              />
+              )
+            }
           </div>
         </Card>
         <CreateForm {...parentMethods} modalVisible={modalVisible} />

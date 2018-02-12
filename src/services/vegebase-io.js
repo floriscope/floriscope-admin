@@ -17,11 +17,11 @@ if (getCurrentUser()) {
   axios.defaults.headers.common.Authorization = null;
 }
 
-export async function getAllCollections() {
+export async function getAllCollections(payload) {
   try {
     const url = `${ADMIN_BASE_URL}/collections`;
-    const collections = await axios.get(url);
-    return collections.data;
+    const response = await axios.get(url, { params: { ...payload } });
+    return response.data;
   } catch (e) {
     // console.log(e);
   }
@@ -38,8 +38,8 @@ export async function getCollection(params) {
 export async function getCollectionSpecimens(params) {
   try {
     const url = `${ADMIN_BASE_URL}/collections/${params.uuid}/specimens`;
-    const specimens = await axios.get(url);
-    return specimens.data;
+    const response = await axios.get(url);
+    return response.data;
   } catch (e) {
     // console.log(e);
   }

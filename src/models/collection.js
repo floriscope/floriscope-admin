@@ -4,17 +4,17 @@ export default {
   namespace: 'collection',
 
   state: {
-    collections: [],
+    collections: {},
     collection: {},
-    specimens: [],
+    specimens: {},
   },
 
   effects: {
-    *fetch(_, { call, put }) {
-      const response = yield call(getAllCollections);
+    *fetch({ payload }, { call, put }) {
+      const response = yield call(getAllCollections, payload);
       yield put({
         type: 'getCollections',
-        payload: response.collections,
+        payload: response,
       });
     },
     *fetchOne({ payload }, { call, put }) {
@@ -28,7 +28,7 @@ export default {
       const response = yield call(getCollectionSpecimens, payload);
       yield put({
         type: 'getCollectionSpecimens',
-        payload: response.specimens,
+        payload: response,
       });
     },
   },

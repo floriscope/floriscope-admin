@@ -164,6 +164,20 @@ export default class CollectionsAll extends PureComponent {
     });
   };
 
+  handleSearch = (e) => {
+    this.props.dispatch({
+      type: 'collection/fetch',
+      payload: {
+        q: e,
+      },
+    });
+    // console.log(e);
+    notification.open({
+      message: 'handleSearch Notification (temp)',
+      description: `Params: ${JSON.stringify(e)}`,
+    });
+  }
+
 
   handleActionsMenuClick = (e) => {
     // console.log(e);
@@ -187,7 +201,7 @@ export default class CollectionsAll extends PureComponent {
     const { loading } = this.props;
     const { modalVisible } = this.state;
 
-    const { collections } = keysToCamelCase(this.props.collection);
+    const { collections: { collections, meta } } = keysToCamelCase(this.props.collection);
     // console.log(this.props);
 
     const parentMethods = {
@@ -209,7 +223,7 @@ export default class CollectionsAll extends PureComponent {
         <Search
           className={styles.extraContentSearch}
           placeholder="Rechercher une entrée"
-          onSearch={() => ({})}
+          onSearch={e => this.handleSearch(e)}
         />
       </div>
     );
@@ -217,11 +231,16 @@ export default class CollectionsAll extends PureComponent {
     const paginationProps = {
       showSizeChanger: true,
       showQuickJumper: true,
-      pageSize: 5,
-      total: 50,
+      pageSize: meta ? meta.pagination.perPage : 5,
+      total: meta ? meta.pagination.totalObjects : 25,
     };
 
-    const ListContent = ({ data: { category, updatedAt, percent = 10, isPublished } }) => (
+    const ListContent = ({ data: {
+      category,
+      updatedAt,
+      specimensPublicationProgress,
+      isPublished },
+    }) => (
       <div className={styles.listContent}>
         <div className={styles.listContentItem}>
           <p>{category}</p>
@@ -232,7 +251,7 @@ export default class CollectionsAll extends PureComponent {
         </div>
         <div className={styles.listContentItem}>
           <Progress
-            percent={percent}
+            percent={specimensPublicationProgress}
             status={isPublished ? 'active' : 'exception'}
             strokeWidth={6}
             style={{ width: 180 }}
