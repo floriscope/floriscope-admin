@@ -12,7 +12,7 @@ const { Header } = Layout;
 
 export default class GlobalHeader extends PureComponent {
   componentWillUnmount() {
-    this.triggerResizeEvent.cancel();
+    // this.triggerResizeEvent.cancel();
   }
   getNoticeData() {
     const { notices = [] } = this.props;
@@ -75,9 +75,6 @@ export default class GlobalHeader extends PureComponent {
         </Menu.Item>
         <Menu.Item key="setting">
           <Icon type="setting" />Paramètres
-        </Menu.Item>
-        <Menu.Item key="triggerError">
-          <Icon type="close-circle" />Error Pages
         </Menu.Item>
         <Menu.Divider />
         <Menu.Item key="logout">

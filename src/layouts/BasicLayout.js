@@ -16,6 +16,7 @@ import { getRoutes } from '../utils/utils';
 import Authorized from '../utils/Authorized';
 import { getMenuData } from '../common/menu';
 import logo from '../assets/logo.svg';
+import { setAuthority, clearCurrentUser } from '../utils/authority';
 
 const { Content } = Layout;
 const { AuthorizedRoute } = Authorized;
@@ -129,21 +130,21 @@ class BasicLayout extends React.PureComponent {
   };
   handleMenuClick = ({ key }) => {
     if (key === 'user') {
-      this.props.dispatch(routerRedux.push('/profile/basic'));
+      this.props.dispatch(routerRedux.push('/profile/details'));
       return;
     }
     if (key === 'setting') {
-      this.props.dispatch(routerRedux.push('/profile/advanced'));
-      return;
-    }
-    if (key === 'triggerError') {
-      this.props.dispatch(routerRedux.push('/exception/trigger'));
+      this.props.dispatch(routerRedux.push('/profile/settings'));
       return;
     }
     if (key === 'logout') {
-      this.props.dispatch({
-        type: 'login/logout',
-      });
+      /* @refactorme
+       Add Auth model with clean effects (actions) and reducers
+       for authentication workflow */
+      message.success('Déconnexion en cours');
+      clearCurrentUser();
+      setAuthority('guest');
+      window.location.reload();
     }
   };
   handleNoticeVisibleChange = (visible) => {
@@ -246,9 +247,7 @@ class BasicLayout extends React.PureComponent {
         <ContainerQuery query={query}>
           {params => (
             <div className={classNames(params)}>
-              <LocaleProvider locale={frFR}>
-                {layout}
-              </LocaleProvider>
+              <LocaleProvider locale={frFR}>{layout}</LocaleProvider>
             </div>
           )}
         </ContainerQuery>
