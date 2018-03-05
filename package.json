@@ -1,6 +1,6 @@
 {
   "name": "floriscope-admin",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Admin interfaces for Floriscope/Vegebase",
   "private": true,
   "scripts": {
