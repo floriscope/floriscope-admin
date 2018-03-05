@@ -93,17 +93,18 @@ export const getRouterData = (app) => {
         import('../routes/Collection/CollectionsAll')
       ),
     },
-    '/collections/new': {
-      component: dynamicWrapper(app, [], () => import('../routes/Exception/403')),
-      exact: true,
-    },
     '/c/:uuid/preview': {
       component: dynamicWrapper(app, [], () => import('../routes/Collection/CollectionPreview')),
       exact: true,
     },
-    '/c/:uuid/specimens': {
-      component: dynamicWrapper(app, [], () => import('../routes/Exception/403')),
+    '/c/:uuid/edit': {
+      component: dynamicWrapper(app, [], () => import('../routes/Collection/CollectionEdit')),
       exact: true,
+    },
+    '/c/:uuid/specimens': {
+      component: dynamicWrapper(app, ['rule', 'collection'], () => import('../routes/Collection/CollectionSpecimens')),
+      exact: true,
+      hideInBreadcrumb: true,
     },
     '/phototheque': {
       component: dynamicWrapper(app, ['list'], () => import('../routes/Phototheque/Phototheque')),

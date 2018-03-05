@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Layout, Icon, message } from 'antd';
+import { Layout, Icon, message, LocaleProvider } from 'antd';
+import frFR from 'antd/lib/locale-provider/fr_FR';
 import DocumentTitle from 'react-document-title';
 import { connect } from 'dva';
 import { Route, Redirect, Switch, routerRedux } from 'dva/router';
@@ -127,6 +128,14 @@ class BasicLayout extends React.PureComponent {
     });
   };
   handleMenuClick = ({ key }) => {
+    if (key === 'user') {
+      this.props.dispatch(routerRedux.push('/profile/basic'));
+      return;
+    }
+    if (key === 'setting') {
+      this.props.dispatch(routerRedux.push('/profile/advanced'));
+      return;
+    }
     if (key === 'triggerError') {
       this.props.dispatch(routerRedux.push('/exception/trigger'));
       return;
@@ -235,7 +244,13 @@ class BasicLayout extends React.PureComponent {
     return (
       <DocumentTitle title={this.getPageTitle()}>
         <ContainerQuery query={query}>
-          {params => <div className={classNames(params)}>{layout}</div>}
+          {params => (
+            <div className={classNames(params)}>
+              <LocaleProvider locale={frFR}>
+                {layout}
+              </LocaleProvider>
+            </div>
+          )}
         </ContainerQuery>
       </DocumentTitle>
     );

@@ -1,4 +1,4 @@
-const BASE_URL = 'https://api.vegebase.io';
+const BASE_URL = 'http://api.lvh.me:3000';
 
 export async function login(credentials) {
   const url = `${BASE_URL}/auth/sign_in`;

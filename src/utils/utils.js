@@ -160,7 +160,6 @@ export function isUrl(path) {
 }
 
 /* @example
- *   import keysToCamelCase from './snakeToCamelCase';
  *   keysToCamelCase({bad_key: 1});   => {badKey: 1}
  *   keysToCamelCase([{bad_key: 1}]); => [{badKey: 1}]
  */
@@ -187,3 +186,27 @@ export function keysToCamelCase(object) {
     });
   }
 }
+
+export function keysToSnakeCase(object) {
+  let snakeCaseObject = _.cloneDeep(object);
+
+  if (_.isArray(snakeCaseObject)) {
+    return _.map(snakeCaseObject, keysToSnakeCase);
+  } else {
+    snakeCaseObject = _.mapKeys(snakeCaseObject, (value, key) => {
+      return _.camelCase(key);
+    });
+
+    // Recursively apply throughout object
+    return _.mapValues(snakeCaseObject, (value) => {
+      if (_.isPlainObject(value)) {
+        return keysToSnakeCase(value);
+      } else if (_.isArray(value)) {
+        return _.map(value, keysToSnakeCase);
+      } else {
+        return value;
+      }
+    });
+  }
+}
+
