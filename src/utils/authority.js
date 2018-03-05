@@ -1,6 +1,6 @@
 // use localStorage to store the authority info, which might be sent from server in actual project.
 export function getAuthority() {
-  return localStorage.getItem('antd-pro-authority') || 'admin';
+  return localStorage.getItem('antd-pro-authority') || 'guest';
 }
 
 export function setAuthority(authority) {
@@ -8,7 +8,7 @@ export function setAuthority(authority) {
 }
 // use localStorage to store currentUser info
 export function getCurrentUser() {
-  return localStorage.getItem('floriscope-current-user') || {};
+  return localStorage.getItem('floriscope-current-user') || null;
 }
 
 export function setCurrentUser(user) {

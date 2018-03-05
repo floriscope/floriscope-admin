@@ -2,19 +2,7 @@ import React, { PureComponent } from 'react';
 import moment from 'moment';
 import { connect } from 'dva';
 import { Link } from 'dva/router';
-import {
-  Row,
-  Col,
-  Form,
-  Card,
-  Select,
-  List,
-  Input,
-  Button,
-  Tooltip,
-  Icon,
-  Switch,
-} from 'antd';
+import { Row, Col, Form, Card, Select, List, Input, Button, Icon } from 'antd';
 import { InstantSearch } from 'react-instantsearch/dom';
 import { connectSearchBox, connectHits, connectStateResults } from 'react-instantsearch/connectors';
 import truncate from 'lodash/truncate';
@@ -22,11 +10,10 @@ import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import StandardFormRow from '../../components/StandardFormRow';
 import TagSelect from '../../components/TagSelect';
 
-import styles from './Phototheque.less';
+import styles from './Connectors.less';
 
 const { Option } = Select;
 const FormItem = Form.Item;
-
 
 /* eslint react/no-array-index-key: 0 */
 @Form.create()
@@ -83,17 +70,6 @@ export default class CoverCardList extends PureComponent {
                 className={styles.card}
                 hoverable
                 key={item.id}
-                actions={[
-                  <Tooltip title="Prévisualiser">
-                    <Icon type="eye" />
-                  </Tooltip>,
-                  <Tooltip title="Éditer">
-                    <Icon type="edit" />
-                  </Tooltip>,
-                  <Tooltip title="Publier">
-                    <Switch />
-                  </Tooltip>,
-                ]}
                 cover={
                   <img
                     alt={item.title}
@@ -133,21 +109,6 @@ export default class CoverCardList extends PureComponent {
       },
     };
 
-    const tagOptions = [
-      { key: 'cat1', value: 'feuilles' },
-      { key: 'cat2', value: 'fruits' },
-      { key: 'cat3', value: 'écorce' },
-      { key: 'cat4', value: 'printemps' },
-      { key: 'cat5', value: 'automne' },
-      { key: 'cat6', value: 'hiver' },
-      { key: 'cat7', value: 'port libre' },
-      { key: 'cat8', value: 'bourgeons' },
-      { key: 'cat9', value: 'macro' },
-      { key: 'cat10', value: 'rouge' },
-      { key: 'cat11', value: 'blanc' },
-      { key: 'cat12', value: 'bleu' },
-    ];
-
     const LoadMoreButton = connectStateResults(
       ({ searchResults }) =>
         (searchResults && searchResults.nbHits !== 0 ? (
@@ -179,11 +140,18 @@ export default class CoverCardList extends PureComponent {
                   <FormItem>
                     {getFieldDecorator('category')(
                       <TagSelect onChange={this.handleFormSubmit} expandable>
-                        {tagOptions.map((option, i) => (
-                          <TagSelect.Option key={i} value={option.key}>
-                            {option.value}
-                          </TagSelect.Option>
-                        ))}
+                        <TagSelect.Option value="cat1">feuilles</TagSelect.Option>
+                        <TagSelect.Option value="cat2">fruits</TagSelect.Option>
+                        <TagSelect.Option value="cat3">écorce</TagSelect.Option>
+                        <TagSelect.Option value="cat4">printemps</TagSelect.Option>
+                        <TagSelect.Option value="cat5">automne</TagSelect.Option>
+                        <TagSelect.Option value="cat6">hiver</TagSelect.Option>
+                        <TagSelect.Option value="cat7">port libre</TagSelect.Option>
+                        <TagSelect.Option value="cat8">bourgeons</TagSelect.Option>
+                        <TagSelect.Option value="cat9">macro</TagSelect.Option>
+                        <TagSelect.Option value="cat10">rouge</TagSelect.Option>
+                        <TagSelect.Option value="cat11">blanc</TagSelect.Option>
+                        <TagSelect.Option value="cat12">bleu</TagSelect.Option>
                       </TagSelect>
                     )}
                   </FormItem>
