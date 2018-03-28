@@ -70,23 +70,16 @@ function getFlatMenuData(menus) {
 export const getRouterData = (app) => {
   const routerConfig = {
     '/': {
-      component: dynamicWrapper(app, ['user', 'login', 'signin'], () =>
-        import('../layouts/BasicLayout')
-      ),
+      component: dynamicWrapper(app, ['user', 'signin'], () => import('../layouts/BasicLayout')),
     },
     '/dashboard/analysis': {
-      component: dynamicWrapper(app, ['chart'], () => import('../routes/Dashboard/Analysis')),
+      component: dynamicWrapper(app, [], () => import('../routes/Exception/404')),
     },
     '/dashboard/monitor': {
-      component: dynamicWrapper(app, ['monitor'], () => import('../routes/Dashboard/Monitor')),
+      component: dynamicWrapper(app, [], () => import('../routes/Exception/404')),
     },
     '/dashboard/workplace': {
-      component: dynamicWrapper(app, ['project', 'activities', 'chart'], () =>
-        import('../routes/Dashboard/Workplace')
-      ),
-      // hideInBreadcrumb: true,
-      // name: '工作台',
-      // authority: 'admin',
+      component: dynamicWrapper(app, [], () => import('../routes/Exception/404')),
     },
     '/collections/all': {
       component: dynamicWrapper(app, ['collection'], () =>
@@ -102,12 +95,14 @@ export const getRouterData = (app) => {
       exact: true,
     },
     '/c/:uuid/specimens': {
-      component: dynamicWrapper(app, ['rule', 'collection'], () => import('../routes/Collection/CollectionSpecimens')),
+      component: dynamicWrapper(app, ['collection'], () =>
+        import('../routes/Collection/CollectionSpecimens')
+      ),
       exact: true,
       hideInBreadcrumb: true,
     },
     '/phototheque': {
-      component: dynamicWrapper(app, ['list'], () => import('../routes/Phototheque/Phototheque')),
+      component: dynamicWrapper(app, [], () => import('../routes/Phototheque/Phototheque')),
     },
     '/i/:uuid': {
       component: dynamicWrapper(app, [], () =>
@@ -117,67 +112,23 @@ export const getRouterData = (app) => {
     '/data': {
       component: dynamicWrapper(app, [], () => import('../routes/Exception/404')),
     },
-    '/instant-search': {
-      component: dynamicWrapper(app, ['list'], () => import('../routes/InstantSearch/Connectors')),
-    },
     '/schema/criteres': {
       component: dynamicWrapper(app, [], () => import('../routes/Schema/Critera')),
     },
     '/schema/valeurs-possibles': {
       component: dynamicWrapper(app, [], () => import('../routes/Schema/OptionValues')),
     },
-    '/form/basic-form': {
-      component: dynamicWrapper(app, ['form'], () => import('../routes/Forms/BasicForm')),
+    '/user': {
+      component: dynamicWrapper(app, [], () => import('../layouts/UserLayout')),
     },
-    '/form/step-form': {
-      component: dynamicWrapper(app, ['form'], () => import('../routes/Forms/StepForm')),
+    '/user/login': {
+      component: dynamicWrapper(app, ['signin'], () => import('../routes/User/Login')),
     },
-    '/form/step-form/info': {
-      component: dynamicWrapper(app, ['form'], () => import('../routes/Forms/StepForm/Step1')),
+    '/user/register': {
+      component: dynamicWrapper(app, ['register'], () => import('../routes/User/Register')),
     },
-    '/form/step-form/confirm': {
-      component: dynamicWrapper(app, ['form'], () => import('../routes/Forms/StepForm/Step2')),
-    },
-    '/form/step-form/result': {
-      component: dynamicWrapper(app, ['form'], () => import('../routes/Forms/StepForm/Step3')),
-    },
-    '/form/advanced-form': {
-      component: dynamicWrapper(app, ['form'], () => import('../routes/Forms/AdvancedForm')),
-    },
-    '/list/table-list': {
-      component: dynamicWrapper(app, ['rule'], () => import('../routes/List/TableList')),
-    },
-    '/list/basic-list': {
-      component: dynamicWrapper(app, ['list'], () => import('../routes/List/BasicList')),
-    },
-    '/list/card-list': {
-      component: dynamicWrapper(app, ['list'], () => import('../routes/List/CardList')),
-    },
-    '/list/search': {
-      component: dynamicWrapper(app, ['list'], () => import('../routes/List/List')),
-    },
-    '/list/search/projects': {
-      component: dynamicWrapper(app, ['list'], () => import('../routes/List/Projects')),
-    },
-    '/list/search/applications': {
-      component: dynamicWrapper(app, ['list'], () => import('../routes/List/Applications')),
-    },
-    '/list/search/articles': {
-      component: dynamicWrapper(app, ['list'], () => import('../routes/List/Articles')),
-    },
-    '/profile/basic': {
-      component: dynamicWrapper(app, ['profile'], () => import('../routes/Profile/BasicProfile')),
-    },
-    '/profile/advanced': {
-      component: dynamicWrapper(app, ['profile'], () =>
-        import('../routes/Profile/AdvancedProfile')
-      ),
-    },
-    '/result/success': {
-      component: dynamicWrapper(app, [], () => import('../routes/Result/Success')),
-    },
-    '/result/fail': {
-      component: dynamicWrapper(app, [], () => import('../routes/Result/Error')),
+    '/user/register-result': {
+      component: dynamicWrapper(app, [], () => import('../routes/User/RegisterResult')),
     },
     '/exception/403': {
       component: dynamicWrapper(app, [], () => import('../routes/Exception/403')),
@@ -193,24 +144,6 @@ export const getRouterData = (app) => {
         import('../routes/Exception/triggerException')
       ),
     },
-    '/user': {
-      component: dynamicWrapper(app, [], () => import('../layouts/UserLayout')),
-    },
-    '/user/login': {
-      component: dynamicWrapper(app, ['signin'], () => import('../routes/User/Login')),
-    },
-    '/user/register': {
-      component: dynamicWrapper(app, ['register'], () => import('../routes/User/Register')),
-    },
-    '/user/register-result': {
-      component: dynamicWrapper(app, [], () => import('../routes/User/RegisterResult')),
-    },
-    '/new': {
-      component: dynamicWrapper(app, [], () => import('../routes/Exception/500')),
-    },
-    // '/user/:id': {
-    //   component: dynamicWrapper(app, [], () => import('../routes/User/SomeComponent')),
-    // },
   };
   // Get name from ./menu.js or just set it in the router data.
   const menuData = getFlatMenuData(getMenuData());
