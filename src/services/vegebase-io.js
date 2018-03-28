@@ -2,9 +2,8 @@ import axios from 'axios';
 import { getCurrentUser } from '../utils/authority';
 import { keysToCamelCase } from '../utils/utils';
 
-const ADMIN_BASE_URL = 'http://api.lvh.me:3000/admin';
-
-
+// const ADMIN_BASE_URL = 'https://api.vegebase.io/admin';
+const ADMIN_BASE_URL = `${process.env.VEGEBASE_API_URL}/admin`;
 // Alter defaults
 axios.defaults.headers.common.Accept = 'application/json';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
