@@ -20,7 +20,7 @@ import {
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
-import { Link, routerRedux } from 'dva/router';
+import { Link, Redirect, routerRedux } from 'dva/router';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import { keysToCamelCase } from '../../utils/utils';
 import styles from './CollectionsAll.less';
@@ -198,11 +198,16 @@ export default class CollectionsAll extends PureComponent {
   // };
 
   render() {
-    const { loading } = this.props;
+    const { loading, collection } = this.props;
+    if (collection.error) {
+      return (
+        <Redirect to="/user/login" />
+      );
+    }
     const { modalVisible } = this.state;
 
-    const { collections: { collections, meta } } = keysToCamelCase(this.props.collection);
     // console.log(this.props);
+    const { collections: { collections, meta } } = keysToCamelCase(this.props.collection);
 
     const parentMethods = {
       handleAdd: this.handleAdd,
