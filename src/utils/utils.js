@@ -194,7 +194,7 @@ export function keysToSnakeCase(object) {
     return _.map(snakeCaseObject, keysToSnakeCase);
   } else {
     snakeCaseObject = _.mapKeys(snakeCaseObject, (value, key) => {
-      return _.camelCase(key);
+      return _.snakeCase(key);
     });
 
     // Recursively apply throughout object

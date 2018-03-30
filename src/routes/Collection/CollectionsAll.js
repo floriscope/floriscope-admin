@@ -178,6 +178,17 @@ export default class CollectionsAll extends PureComponent {
     });
   }
 
+  handleListChange = (page, perPage) => {
+    console.log('list change');
+    this.props.dispatch({
+      type: 'collection/fetch',
+      payload: {
+        page,
+        perPage,
+      },
+    });
+  }
+
 
   handleActionsMenuClick = (e) => {
     // console.log(e);
@@ -236,8 +247,16 @@ export default class CollectionsAll extends PureComponent {
     const paginationProps = {
       showSizeChanger: true,
       showQuickJumper: true,
+      current: meta ? meta.pagination.currentPage : 1,
       pageSize: meta ? meta.pagination.perPage : 5,
       total: meta ? meta.pagination.totalObjects : 25,
+      onChange: (page, pageSize) => {
+        this.handleListChange(page, pageSize);
+        // console.log(page, pageSize);
+      },
+      onShowSizeChange: (page, pageSize) => {
+        this.handleListChange(page, pageSize);
+      },
     };
 
     const ListContent = ({ data: {
@@ -323,7 +342,7 @@ export default class CollectionsAll extends PureComponent {
                       </Badge>
                     }
                     title={
-                      <Link to={`/c/${item.uuid}`} style={{ marginLeft: '24px' }}>
+                      <Link to={`/c/${item.uuid}/preview`} style={{ marginLeft: '24px' }}>
                         {item.title}
                       </Link>
                     }
