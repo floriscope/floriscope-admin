@@ -41,8 +41,12 @@ export async function getCollection(params) {
   }
 }
 export async function getCollectionSpecimens(params) {
+  const page = params.page || 1;
+  const pageSize = params.pageSize || 25;
   try {
-    const url = `${ADMIN_BASE_URL}/collections/${params.uuid}/specimens`;
+    const url = `${ADMIN_BASE_URL}/collections/${
+      params.uuid
+    }/specimens?page=${page}&per_page=${pageSize}`;
     const response = await axios.get(url);
     return response.data;
   } catch (e) {

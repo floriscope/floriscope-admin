@@ -94,6 +94,7 @@ export default class TableList extends PureComponent {
   handleStandardTableChange = (pagination, filtersArg, sorter) => {
     const { dispatch } = this.props;
     const { formValues } = this.state;
+    console.log(pagination);
 
     const filters = Object.keys(filtersArg).reduce((obj, key) => {
       const newObj = { ...obj };
@@ -112,8 +113,12 @@ export default class TableList extends PureComponent {
     }
 
     dispatch({
-      type: 'rule/fetch',
-      payload: params,
+      type: 'collection/fetchSpecimens',
+      payload: {
+        uuid: this.props.match.params.uuid,
+        page: pagination.current,
+        pageSize: pagination.pageSize,
+      },
     });
   };
 
