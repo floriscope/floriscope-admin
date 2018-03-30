@@ -41,8 +41,7 @@ export async function getCollection(params) {
   }
 }
 export async function getCollectionSpecimens(params) {
-  const page = params.page || 1;
-  const pageSize = params.pageSize || 25;
+  const { page = 1, pageSize = 25 } = params;
   try {
     const url = `${ADMIN_BASE_URL}/collections/${
       params.uuid
