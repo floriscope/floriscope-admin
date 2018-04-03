@@ -36,15 +36,15 @@ class SpecimenTable extends PureComponent {
     }
 
     this.setState({ selectedRowKeys });
-  }
+  };
 
   handleTableChange = (pagination, filters, sorter) => {
     this.props.onChange(pagination, filters, sorter);
-  }
+  };
 
   cleanSelectedKeys = () => {
     this.handleRowSelectChange([], []);
-  }
+  };
 
   render() {
     const { selectedRowKeys } = this.state;
@@ -59,7 +59,6 @@ class SpecimenTable extends PureComponent {
     };
 
     const columns = [
-
       {
         title: 'Désignation originale',
         dataIndex: 'original',
@@ -112,6 +111,7 @@ class SpecimenTable extends PureComponent {
     const paginationProps = {
       showSizeChanger: true,
       showQuickJumper: true,
+      pageSizeOptions: ['10', '25', '50', '100', '250'],
       pageSize: meta ? meta.pagination.perPage : 5,
       total: meta ? meta.pagination.totalObjects : 25,
     };
@@ -128,13 +128,15 @@ class SpecimenTable extends PureComponent {
       <div className={styles.standardTable}>
         <div className={styles.tableAlert}>
           <Alert
-            message={(
+            message={
               <div>
                 <a style={{ fontWeight: 600 }}>{selectedRowKeys.length}</a>
                 &nbsp;Spécimens&nbsp;&nbsp;sélectionnés
-                <a onClick={this.cleanSelectedKeys} style={{ marginLeft: 24 }}>Vider</a>
+                <a onClick={this.cleanSelectedKeys} style={{ marginLeft: 24 }}>
+                  Vider
+                </a>
               </div>
-            )}
+            }
             type="info"
             showIcon
           />

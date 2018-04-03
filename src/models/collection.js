@@ -1,4 +1,9 @@
-import { getAllCollections, getCollection, getCollectionSpecimens } from '../services/vegebase-io.js';
+import {
+  getAllCollections,
+  getCollection,
+  getCollectionSpecimens,
+} from '../services/vegebase-io.js';
+import { setAuthority, clearCurrentUser } from '../utils/authority';
 
 export default {
   namespace: 'collection',
@@ -7,11 +12,22 @@ export default {
     collections: {},
     collection: {},
     specimens: {},
+    error: false,
+    errorMessage: null,
   },
 
   effects: {
     *fetch({ payload }, { call, put }) {
-      const response = yield call(getAllCollections, payload);
+      let response;
+      try {
+        response = yield call(getAllCollections, payload);
+      } catch (err) {
+        // Report errors to our store
+        yield put({
+          type: 'reportFailure',
+          payload: err,
+        });
+      }
       yield put({
         type: 'getCollections',
         payload: response,
@@ -50,6 +66,17 @@ export default {
       return {
         ...state,
         specimens: action.payload,
+      };
+    },
+    reportFailure(state, err) {
+      // console.log('err', err);
+      setAuthority('guest');
+      clearCurrentUser();
+      return {
+        ...state,
+        error: true,
+        errorMessage: err,
+        collections: {},
       };
     },
   },

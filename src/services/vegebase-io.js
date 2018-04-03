@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { getCurrentUser } from '../utils/authority';
-import { keysToCamelCase } from '../utils/utils';
+import { keysToCamelCase, keysToSnakeCase } from '../utils/utils';
 
 // const ADMIN_BASE_URL = 'https://api.vegebase.io/admin';
 const ADMIN_BASE_URL = `${process.env.VEGEBASE_API_URL}/admin`;
@@ -16,13 +16,21 @@ if (getCurrentUser()) {
   axios.defaults.headers.common.Authorization = null;
 }
 
+// @fixme Add Axios Interceptors and Token Refresh Logic here
+
 export async function getAllCollections(payload) {
+  // @refactoring Here is a crappy code for 401 response
+  // (set up an interceptor may be the right path)
+  // const { page = 1, pageSize = 25 } = payload;
   try {
     const url = `${ADMIN_BASE_URL}/collections`;
-    const response = await axios.get(url, { params: { ...payload } });
+    const response = await axios.get(url, { params: { ...keysToSnakeCase(payload) } });
     return response.data;
-  } catch (e) {
-    // console.log(e);
+  } catch (error) {
+    if (error.response.status === 401) {
+      // console.log('0', error.response.data);
+      throw new Error('Unauthorized!');
+    }
   }
 }
 export async function getCollection(params) {
@@ -35,8 +43,11 @@ export async function getCollection(params) {
   }
 }
 export async function getCollectionSpecimens(params) {
+  const { page = 1, pageSize = 25 } = params;
   try {
-    const url = `${ADMIN_BASE_URL}/collections/${params.uuid}/specimens`;
+    const url = `${ADMIN_BASE_URL}/collections/${
+      params.uuid
+    }/specimens?page=${page}&per_page=${pageSize}`;
     const response = await axios.get(url);
     return response.data;
   } catch (e) {
