@@ -155,6 +155,9 @@ export default class CollectionsAll extends PureComponent {
   componentDidMount() {
     this.props.dispatch({
       type: 'collection/fetch',
+      payload: {
+        q: this.props.collection.query,
+      },
     });
   }
 
@@ -239,6 +242,7 @@ export default class CollectionsAll extends PureComponent {
         <Search
           className={styles.extraContentSearch}
           placeholder="Rechercher une entrée"
+          defaultValue={collection.query}
           onSearch={e => this.handleSearch(e)}
         />
       </div>

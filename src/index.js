@@ -3,7 +3,7 @@ import 'url-polyfill';
 import dva from 'dva';
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-
+import storageSession from 'redux-persist/lib/storage/session';
 import createHistory from 'history/createHashHistory';
 // user BrowserHistory
 // import createHistory from 'history/createBrowserHistory';
@@ -16,17 +16,27 @@ import './rollbar';
 import './index.less';
 
 // 0. Set peristence layer
-const persistConfig = {
+const rootPersistConfig = {
   key: 'root',
   storage,
-  whitelist: ['global', 'user'],
+  whitelist: ['global'],
+  blacklist: ['user', 'auth'],
 };
+
+const searchPersistConfig = {
+  key: 'root',
+  storage: storageSession,
+  whitelist: ['collection'],
+};
+
 let $persistor;
 export function createPersistorIfNecessary(store) {
   if (!$persistor && store) {
     $persistor = persistStore(store);
-    const rootReducer = persistReducer(persistConfig, state => state);
-    store.replaceReducer(rootReducer);
+    const searchReducer = persistReducer(searchPersistConfig, state => state);
+    const reducer = persistReducer(rootPersistConfig, searchReducer);
+    store.replaceReducer(reducer);
+    // store.replaceReducer(searchReducer);
     $persistor.persist();
   }
   return $persistor;
@@ -36,7 +46,8 @@ export function createPersistorIfNecessary(store) {
 const app = dva({
   onReducer: (reducer) => {
     if (createPersistorIfNecessary(app._store)) {
-      const newReducer = persistReducer(persistConfig, reducer);
+      const newSearchReducer = persistReducer(searchPersistConfig, reducer);
+      const newReducer = persistReducer(rootPersistConfig, newSearchReducer);
       setTimeout(() => $persistor && $persistor.persist(), 0);
       return newReducer;
     } else {

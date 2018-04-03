@@ -14,6 +14,7 @@ export default {
     specimens: {},
     error: false,
     errorMessage: null,
+    query: null,
   },
 
   effects: {
@@ -31,6 +32,7 @@ export default {
       yield put({
         type: 'getCollections',
         payload: response,
+        query: payload.q,
       });
     },
     *fetchOne({ payload }, { call, put }) {
@@ -53,6 +55,7 @@ export default {
     getCollections(state, action) {
       return {
         ...state,
+        query: action.query,
         collections: action.payload,
       };
     },
