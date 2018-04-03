@@ -57,6 +57,7 @@
         "functions": "ignore"
       }
     ],
+    "no-underscore-dangle": ["error", { "allow": ["_store"] }],
     "object-curly-newline": [0],
     "function-paren-newline": [0],
     "no-restricted-globals": [0],

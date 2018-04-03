@@ -18,8 +18,7 @@
     "test": "roadhog test",
     "test:component": "roadhog test ./src/components",
     "test:all": "node ./tests/run-tests.js",
-    "deploy":
-      "yarn build && touch dist/package.json && cat .tmp/dist/package.json > dist/package.json && cd dist && now --name floriscope-admin --public -e SECRET=cjbqc44p117wp0142i1uenoi6"
+    "deploy": "yarn build && touch dist/package.json && cat .tmp/dist/package.json > dist/package.json && cd dist && now --name floriscope-admin --public -e SECRET=cjbqc44p117wp0142i1uenoi6"
   },
   "dependencies": {
     "@antv/data-set": "^0.8.0",
@@ -50,6 +49,7 @@
     "react-dom": "^16.2.0",
     "react-fittext": "^1.0.0",
     "react-instantsearch": "^4.4.2",
+    "redux-persist": "^5.9.1",
     "serve": "^6.4.8",
     "url-polyfill": "^1.0.10"
   },
@@ -89,5 +89,9 @@
     "**/*.{js,jsx}": "lint-staged:js",
     "**/*.less": "stylelint --syntax less"
   },
-  "browserslist": ["> 1%", "last 2 versions", "not ie <= 10"]
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 10"
+  ]
 }
